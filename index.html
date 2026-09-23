@@ -3,176 +3,689 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Initial HTML structure for the CellStock cellphone inventory management system.">
   <title>CellStock Inventory Management System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f4f7fb;
+      color: #172033;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    body > a {
+      position: absolute;
+      left: -9999px;
+    }
+
+    body > a:focus {
+      left: 16px;
+      top: 16px;
+      background-color: #ffffff;
+      color: #0b4f6c;
+      padding: 10px 14px;
+      z-index: 2;
+    }
+
+    header {
+      background-color: #102a43;
+      border-bottom: 4px solid #21c7d9;
+      color: #ffffff;
+      padding: 28px 6%;
+    }
+
+    .header-content {
+      margin: 0 auto;
+      max-width: 1180px;
+    }
+
+    header h1,
+    header p {
+      margin: 0;
+    }
+
+    header h1 {
+      font-size: 2.75rem;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #d9e2ec;
+      font-size: 1.05rem;
+    }
+
+    header nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      list-style: none;
+      margin: 22px 0 0;
+      padding: 0;
+    }
+
+    header nav li {
+      display: block;
+      margin: 0;
+    }
+
+    header nav a {
+      color: #d9f8fb;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    header nav a:hover,
+    header nav a:focus {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    main {
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: 32px 24px;
+      width: 100%;
+    }
+
+    section {
+      border-bottom: 1px solid #cad5e2;
+      max-width: 100%;
+      min-width: 0;
+      padding: 32px 0 40px;
+    }
+
+    h2,
+    h3 {
+      line-height: 1.25;
+      margin-bottom: 10px;
+      margin-top: 8px;
+    }
+
+    section > h2 {
+      border-left: 4px solid #21c7d9;
+      color: #102a43;
+      font-size: 1.65rem;
+      margin-top: 0;
+      padding-left: 12px;
+    }
+
+    .section-intro {
+      color: #486581;
+      margin: 0 0 22px;
+      max-width: 760px;
+    }
+
+    article {
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      background-color: #ffffff;
+      border: 1px solid #d8e1eb;
+      border-left: 4px solid #21c7d9;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(16, 42, 67, 0.07);
+      padding: 22px;
+    }
+
+    #featured-summary {
+      background-color: #e8f8fa;
+      border-color: #21c7d9;
+    }
+
+    .summary-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      list-style: none;
+      margin: 18px 0;
+      padding: 0;
+    }
+
+    .summary-list li {
+      background-color: #ffffff;
+      border: 1px solid #b9e3e8;
+      border-radius: 4px;
+      min-width: 180px;
+      padding: 12px;
+    }
+
+    .label {
+      background-color: #0b7285;
+      color: #ffffff;
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      text-transform: uppercase;
+    }
+
+    .action-primary {
+      background-color: #0b7285;
+      border: 2px solid #0b7285;
+      border-radius: 4px;
+      color: #ffffff;
+      display: inline-block;
+      font-weight: bold;
+      margin-top: 6px;
+      padding: 9px 14px;
+      text-decoration: none;
+    }
+
+    .action-primary:hover,
+    .action-primary:focus {
+      background-color: #075c6b;
+      border-color: #075c6b;
+      text-decoration: underline;
+    }
+
+    .action-secondary {
+      border: 2px solid #8a4b00;
+      border-radius: 4px;
+      color: #714000;
+      display: inline-block;
+      font-weight: bold;
+      padding: 7px 12px;
+      text-decoration: none;
+    }
+
+    .action-secondary:hover,
+    .action-secondary:focus {
+      background-color: #8a4b00;
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .status {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 4px 8px;
+    }
+
+    .status-available {
+      background-color: #d9f7e7;
+      color: #17643a;
+    }
+
+    .status-low {
+      background-color: #fff0d4;
+      color: #8a4b00;
+    }
+
+    .form-note {
+      background-color: #e9eff6;
+      border-left: 4px solid #6283a3;
+      border-radius: 4px;
+      color: #334e68;
+      margin: 12px 0;
+      padding: 10px 12px;
+    }
+
+    aside {
+      background-color: #fff7df;
+      border-left: 4px solid #f4a62a;
+      border-radius: 6px;
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+    }
+
+    figure {
+      margin: 24px 0 0;
+    }
+
+    img {
+      height: auto;
+      max-width: 100%;
+    }
+
+    table {
+      border-collapse: collapse;
+      display: block;
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    caption {
+      font-weight: bold;
+      padding: 10px 0;
+      text-align: left;
+    }
+
+    th,
+    td {
+      border: 1px solid #cad5e2;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e9eff6;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f7f9fc;
+    }
+
+    tbody tr:hover {
+      background-color: #eef8fa;
+    }
+
+    .form-panel {
+      background-color: #ffffff;
+      border: 1px solid #b8c6d6;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(16, 42, 67, 0.05);
+      margin: 18px 0;
+      min-width: 0;
+      padding: 22px;
+    }
+
+    legend {
+      color: #102a43;
+      font-weight: bold;
+      padding: 0 8px;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #8fa2b8;
+      border-radius: 4px;
+      font: inherit;
+      max-width: 100%;
+      padding: 9px;
+      width: 420px;
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+      border-color: #0b7285;
+    }
+
+    button {
+      cursor: pointer;
+      font: inherit;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #f4a62a;
+      outline-offset: 3px;
+    }
+
+    footer {
+      background-color: #102a43;
+      color: #d9e2ec;
+      padding: 24px 6%;
+      text-align: center;
+    }
+
+    footer a {
+      color: #8ee8f0;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 24px;
+      }
+
+      main {
+        padding: 24px;
+      }
+
+      article,
+      aside {
+        padding: 18px;
+      }
+
+      header h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>CellStock</h1>
-    <p>Cellphone Inventory Management System</p>
+  <a href="#main-content">Skip to main content</a>
 
-    <nav aria-label="Main navigation">
-      <a href="#dashboard">Dashboard</a>
-      <a href="#products">Cellphones</a>
-      <a href="#stock">Stock Transactions</a>
-      <a href="#suppliers">Suppliers</a>
-      <a href="#login">Login</a>
-    </nav>
+  <header>
+    <div class="header-content">
+      <h1>CellStock</h1>
+      <p>Cellphone Inventory Management System</p>
+
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#inventory">Inventory</a></li>
+          <li><a href="#transactions">Stock Transactions</a></li>
+          <li><a href="#suppliers">Suppliers</a></li>
+          <li><a href="#access">Staff Access</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <section id="dashboard">
-      <h2>Inventory Dashboard</h2>
-      <p>Monitor available cellphone units and recent inventory activity.</p>
+  <main id="main-content">
+    <section id="overview" aria-labelledby="overview-heading">
+      <h2 id="overview-heading">System Overview</h2>
+      <p class="section-intro">
+        CellStock helps a gadget store organize cellphone models, stock quantities,
+        suppliers, and inventory movements through a browser.
+      </p>
 
-      <ul>
-        <li><strong>Total phone models:</strong> 24</li>
-        <li><strong>Available units:</strong> 86</li>
-        <li><strong>Low-stock models:</strong> 3</li>
-        <li><strong>Registered suppliers:</strong> 5</li>
-      </ul>
+      <article class="panel">
+        <span class="label">Users</span>
+        <h3>Target Users</h3>
+        <ul>
+          <li>Store owner or administrator</li>
+          <li>Inventory manager</li>
+          <li>Store staff or stock clerk</li>
+        </ul>
+      </article>
 
       <figure>
-        <img src="assets/cellphones.jpg" alt="Cellphones displayed together on a table" width="500">
-        <figcaption>CellStock helps the store organize its cellphone inventory.</figcaption>
+        <img
+          src="assets/cellphones.jpg"
+          alt="A cellphone placed beside a laptop"
+          width="500"
+        >
+        <figcaption>CellStock provides one organized workspace for cellphone inventory.</figcaption>
       </figure>
     </section>
 
-    <section id="products">
-      <h2>Cellphone Inventory</h2>
+    <section id="dashboard" aria-labelledby="dashboard-heading">
+      <h2 id="dashboard-heading">Inventory Dashboard</h2>
+      <p class="section-intro">Review the store's current inventory status and recent activity.</p>
 
-      <form action="#products" method="get">
-        <fieldset>
-          <legend>Search Cellphones</legend>
+      <article id="featured-summary" class="panel">
+        <span class="label">Live Summary</span>
+        <h3>Inventory Summary</h3>
+        <ul class="summary-list">
+          <li><strong>Total phone models:</strong> 24</li>
+          <li><strong>Available units:</strong> 86</li>
+          <li><strong>Low-stock models:</strong> 3</li>
+          <li><strong>Registered suppliers:</strong> 5</li>
+        </ul>
+        <a href="#inventory" class="action-primary">View cellphone inventory</a>
+      </article>
 
-          <label for="search-model">Phone model or brand</label>
-          <input type="text" id="search-model" name="search-model" placeholder="Example: Samsung Galaxy">
+      <aside aria-labelledby="alert-heading">
+        <h3 id="alert-heading">Low-Stock Alert</h3>
+        <p><strong>Xiaomi Redmi Note 14</strong> has only 2 units remaining.</p>
+        <p><a href="#inventory-list" class="action-secondary">Review the inventory list</a></p>
+      </aside>
+    </section>
 
-          <label for="brand-filter">Brand</label>
-          <select id="brand-filter" name="brand-filter">
-            <option value="">All brands</option>
-            <option value="apple">Apple</option>
-            <option value="samsung">Samsung</option>
-            <option value="xiaomi">Xiaomi</option>
-            <option value="oppo">OPPO</option>
-          </select>
+    <section id="inventory" aria-labelledby="inventory-heading">
+      <h2 id="inventory-heading">Cellphone Inventory</h2>
+      <p class="section-intro">Search the product list or prepare the details of a new cellphone record.</p>
 
-          <button type="submit">Search</button>
+      <form action="#inventory-list" method="get" role="search">
+        <fieldset class="form-panel">
+          <legend>Search and Filter Cellphones</legend>
+
+          <p>
+            <label for="search-model">Phone model or brand</label><br>
+            <input
+              type="search"
+              id="search-model"
+              name="search-model"
+              placeholder="Example: Samsung Galaxy"
+            >
+          </p>
+
+          <p>
+            <label for="brand-filter">Brand</label><br>
+            <select id="brand-filter" name="brand-filter">
+              <option value="">All brands</option>
+              <option value="apple">Apple</option>
+              <option value="samsung">Samsung</option>
+              <option value="xiaomi">Xiaomi</option>
+              <option value="oppo">OPPO</option>
+            </select>
+          </p>
+
+          <p>
+            <label for="stock-filter">Stock status</label><br>
+            <select id="stock-filter" name="stock-filter">
+              <option value="">All stock levels</option>
+              <option value="available">In Stock</option>
+              <option value="low">Low Stock</option>
+              <option value="out">Out of Stock</option>
+            </select>
+          </p>
+
+          <button type="submit" class="action-primary">Search Inventory</button>
         </fieldset>
       </form>
 
-      <article>
-        <h3>Featured Phone Models</h3>
-        <ul>
-          <li>Apple iPhone 16 - 8 units available</li>
-          <li>Samsung Galaxy S25 - 5 units available</li>
-          <li>Xiaomi Redmi Note 14 - 2 units available</li>
-        </ul>
-        <button type="button">View All Cellphones</button>
+      <article id="inventory-list" class="panel">
+        <span class="label">Product List</span>
+        <h3>Available Cellphones</h3>
+
+        <table>
+          <caption>Sample cellphone inventory records</caption>
+          <thead>
+            <tr>
+              <th scope="col">Brand</th>
+              <th scope="col">Model</th>
+              <th scope="col">Storage</th>
+              <th scope="col">Color</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Apple</td>
+              <td>iPhone 16</td>
+              <td>128 GB</td>
+              <td>Black</td>
+              <td>PHP 54,999</td>
+              <td>8</td>
+              <td><span class="status status-available">In Stock</span></td>
+            </tr>
+            <tr>
+              <td>Samsung</td>
+              <td>Galaxy S25</td>
+              <td>256 GB</td>
+              <td>Silver</td>
+              <td>PHP 51,999</td>
+              <td>5</td>
+              <td><span class="status status-available">In Stock</span></td>
+            </tr>
+            <tr>
+              <td>Xiaomi</td>
+              <td>Redmi Note 14</td>
+              <td>128 GB</td>
+              <td>Blue</td>
+              <td>PHP 13,999</td>
+              <td>2</td>
+              <td><span class="status status-low">Low Stock</span></td>
+            </tr>
+          </tbody>
+        </table>
       </article>
 
-      <article>
-        <h3>Add a Cellphone</h3>
+      <article class="panel" aria-labelledby="add-phone-heading">
+        <span class="label">New Record</span>
+        <h3 id="add-phone-heading">Add a Cellphone Record</h3>
+        <p class="form-note">Complete all required product details before adding a record.</p>
 
-        <form action="#products" method="post">
-          <fieldset>
+        <form action="#inventory-list" method="get">
+          <fieldset class="form-panel">
             <legend>New Product Details</legend>
 
-            <label for="phone-brand">Brand</label>
-            <input type="text" id="phone-brand" name="phone-brand" required>
+            <p>
+              <label for="phone-brand">Brand</label><br>
+              <input type="text" id="phone-brand" name="phone-brand" required>
+            </p>
 
-            <label for="phone-model">Model</label>
-            <input type="text" id="phone-model" name="phone-model" required>
+            <p>
+              <label for="phone-model">Model</label><br>
+              <input type="text" id="phone-model" name="phone-model" required>
+            </p>
 
-            <label for="phone-price">Price</label>
-            <input type="number" id="phone-price" name="phone-price" min="0" step="0.01" required>
+            <p>
+              <label for="storage">Storage capacity</label><br>
+              <select id="storage" name="storage" required>
+                <option value="">Select storage</option>
+                <option value="64">64 GB</option>
+                <option value="128">128 GB</option>
+                <option value="256">256 GB</option>
+                <option value="512">512 GB</option>
+              </select>
+            </p>
 
-            <label for="initial-stock">Initial stock</label>
-            <input type="number" id="initial-stock" name="initial-stock" min="0" required>
+            <p>
+              <label for="phone-color">Color</label><br>
+              <input type="text" id="phone-color" name="phone-color" required>
+            </p>
 
-            <button type="submit">Add Cellphone</button>
+            <p>
+              <label for="phone-price">Price in Philippine pesos</label><br>
+              <input type="number" id="phone-price" name="phone-price" min="0" step="0.01" required>
+            </p>
+
+            <p>
+              <label for="initial-stock">Initial stock quantity</label><br>
+              <input type="number" id="initial-stock" name="initial-stock" min="0" required>
+            </p>
+
+            <button type="submit" class="action-primary">Add Cellphone Record</button>
           </fieldset>
         </form>
       </article>
     </section>
 
-    <section id="stock">
-      <h2>Stock Transactions</h2>
-      <p>Record incoming and outgoing cellphone units.</p>
+    <section id="transactions" aria-labelledby="transactions-heading">
+      <h2 id="transactions-heading">Stock Transactions</h2>
+      <p class="section-intro">Prepare stock-in and stock-out records for cellphone units.</p>
+      <p class="form-note">Select the movement type and enter a quantity of at least one unit.</p>
 
-      <form action="#stock" method="post">
-        <fieldset>
+      <form action="#transaction-history" method="get">
+        <fieldset class="form-panel">
           <legend>Record Stock Movement</legend>
 
-          <label for="transaction-model">Phone model</label>
-          <input type="text" id="transaction-model" name="transaction-model" required>
+          <p>
+            <label for="transaction-model">Phone model</label><br>
+            <input type="text" id="transaction-model" name="transaction-model" required>
+          </p>
 
-          <label for="transaction-type">Transaction type</label>
-          <select id="transaction-type" name="transaction-type" required>
-            <option value="">Select a transaction</option>
-            <option value="stock-in">Stock In</option>
-            <option value="stock-out">Stock Out</option>
-          </select>
+          <p>
+            <label for="transaction-type">Transaction type</label><br>
+            <select id="transaction-type" name="transaction-type" required>
+              <option value="">Select a transaction</option>
+              <option value="stock-in">Stock In</option>
+              <option value="stock-out">Stock Out</option>
+            </select>
+          </p>
 
-          <label for="quantity">Quantity</label>
-          <input type="number" id="quantity" name="quantity" min="1" required>
+          <p>
+            <label for="quantity">Quantity</label><br>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+          </p>
 
-          <label for="transaction-notes">Notes</label>
-          <textarea id="transaction-notes" name="transaction-notes" rows="4" placeholder="Add transaction details"></textarea>
+          <p>
+            <label for="transaction-date">Transaction date</label><br>
+            <input type="date" id="transaction-date" name="transaction-date" required>
+          </p>
 
-          <button type="submit">Save Transaction</button>
+          <p>
+            <label for="transaction-notes">Notes</label><br>
+            <textarea
+              id="transaction-notes"
+              name="transaction-notes"
+              rows="4"
+              placeholder="Add transaction details"
+            ></textarea>
+          </p>
+
+          <button type="submit" class="action-primary">Save Stock Transaction</button>
         </fieldset>
       </form>
-    </section>
 
-    <section id="suppliers">
-      <h2>Suppliers</h2>
-      <article>
-        <h3>Current Suppliers</h3>
+      <article id="transaction-history" class="panel">
+        <span class="label">Recent Activity</span>
+        <h3>Recent Transactions</h3>
         <ol>
-          <li>Northstar Mobile Distribution</li>
-          <li>Prime Gadget Supply</li>
-          <li>Metro Phone Trading</li>
+          <li>Stock In: 10 Apple iPhone 16 units</li>
+          <li>Stock Out: 2 Samsung Galaxy S25 units</li>
+          <li>Stock In: 8 OPPO Reno 13 units</li>
         </ol>
-        <button type="button">View Supplier Records</button>
       </article>
     </section>
 
-    <aside>
-      <h2>Low-Stock Alert</h2>
-      <p><strong>Xiaomi Redmi Note 14</strong> has only 2 units remaining.</p>
-      <button type="button">Review Low-Stock Items</button>
-    </aside>
+    <section id="suppliers" aria-labelledby="suppliers-heading">
+      <h2 id="suppliers-heading">Suppliers</h2>
+      <p class="section-intro">Review the companies that provide cellphone units to the store.</p>
 
-    <section id="login">
-      <h2>Staff Login</h2>
-      <p>Authorized store personnel can access the inventory system.</p>
+      <article class="panel">
+        <span class="label">Partners</span>
+        <h3>Current Supplier Records</h3>
+        <ul>
+          <li><strong>Northstar Mobile Distribution:</strong> Apple and Samsung units</li>
+          <li><strong>Prime Gadget Supply:</strong> Xiaomi and OPPO units</li>
+          <li><strong>Metro Phone Trading:</strong> Mixed cellphone brands</li>
+        </ul>
+      </article>
+    </section>
 
-      <form action="#dashboard" method="post">
-        <fieldset>
+    <section id="access" aria-labelledby="access-heading">
+      <h2 id="access-heading">Staff Access</h2>
+      <p class="section-intro">Authorized store personnel can enter their account information and role.</p>
+      <p class="form-note">Account verification will be connected during backend development.</p>
+
+      <form action="#dashboard" method="get">
+        <fieldset class="form-panel">
           <legend>Account Information</legend>
 
-          <label for="email">Email address</label>
-          <input type="email" id="email" name="email" required>
+          <p>
+            <label for="email">Email address</label><br>
+            <input type="email" id="email" name="email" autocomplete="username" required>
+          </p>
 
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required>
+          <p>
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" autocomplete="current-password" required>
+          </p>
 
-          <label for="role">Account role</label>
-          <select id="role" name="role" required>
-            <option value="">Select a role</option>
-            <option value="admin">Owner or Administrator</option>
-            <option value="manager">Inventory Manager</option>
-            <option value="staff">Store Staff</option>
-          </select>
+          <p>
+            <label for="role">Account role</label><br>
+            <select id="role" name="role" required>
+              <option value="">Select a role</option>
+              <option value="admin">Owner or Administrator</option>
+              <option value="manager">Inventory Manager</option>
+              <option value="staff">Store Staff</option>
+            </select>
+          </p>
 
-          <button type="submit">Log In</button>
+          <button type="submit" class="action-primary">Open Dashboard</button>
         </fieldset>
       </form>
+
+      <p><em>This frontend currently demonstrates the planned account interface. Secure verification and data storage will be added during backend development.</em></p>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 CellStock. Initial HTML project structure for Web Systems and Technology.</p>
+    <p>&copy; 2026 CellStock. Web Systems and Technology project.</p>
+    <nav aria-label="Footer navigation">
+      <a href="#overview">About CellStock</a> |
+      <a href="#main-content">Back to top</a>
+    </nav>
   </footer>
 </body>
 </html>
