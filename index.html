@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CellStock Inventory Management System</title>
+</head>
+<body>
+  <header>
+    <h1>CellStock</h1>
+    <p>Cellphone Inventory Management System</p>
+
+    <nav aria-label="Main navigation">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#products">Cellphones</a>
+      <a href="#stock">Stock Transactions</a>
+      <a href="#suppliers">Suppliers</a>
+      <a href="#login">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="dashboard">
+      <h2>Inventory Dashboard</h2>
+      <p>Monitor available cellphone units and recent inventory activity.</p>
+
+      <ul>
+        <li><strong>Total phone models:</strong> 24</li>
+        <li><strong>Available units:</strong> 86</li>
+        <li><strong>Low-stock models:</strong> 3</li>
+        <li><strong>Registered suppliers:</strong> 5</li>
+      </ul>
+
+      <figure>
+        <img src="assets/cellphones.jpg" alt="Cellphones displayed together on a table" width="500">
+        <figcaption>CellStock helps the store organize its cellphone inventory.</figcaption>
+      </figure>
+    </section>
+
+    <section id="products">
+      <h2>Cellphone Inventory</h2>
+
+      <form action="#products" method="get">
+        <fieldset>
+          <legend>Search Cellphones</legend>
+
+          <label for="search-model">Phone model or brand</label>
+          <input type="text" id="search-model" name="search-model" placeholder="Example: Samsung Galaxy">
+
+          <label for="brand-filter">Brand</label>
+          <select id="brand-filter" name="brand-filter">
+            <option value="">All brands</option>
+            <option value="apple">Apple</option>
+            <option value="samsung">Samsung</option>
+            <option value="xiaomi">Xiaomi</option>
+            <option value="oppo">OPPO</option>
+          </select>
+
+          <button type="submit">Search</button>
+        </fieldset>
+      </form>
+
+      <article>
+        <h3>Featured Phone Models</h3>
+        <ul>
+          <li>Apple iPhone 16 - 8 units available</li>
+          <li>Samsung Galaxy S25 - 5 units available</li>
+          <li>Xiaomi Redmi Note 14 - 2 units available</li>
+        </ul>
+        <button type="button">View All Cellphones</button>
+      </article>
+
+      <article>
+        <h3>Add a Cellphone</h3>
+
+        <form action="#products" method="post">
+          <fieldset>
+            <legend>New Product Details</legend>
+
+            <label for="phone-brand">Brand</label>
+            <input type="text" id="phone-brand" name="phone-brand" required>
+
+            <label for="phone-model">Model</label>
+            <input type="text" id="phone-model" name="phone-model" required>
+
+            <label for="phone-price">Price</label>
+            <input type="number" id="phone-price" name="phone-price" min="0" step="0.01" required>
+
+            <label for="initial-stock">Initial stock</label>
+            <input type="number" id="initial-stock" name="initial-stock" min="0" required>
+
+            <button type="submit">Add Cellphone</button>
+          </fieldset>
+        </form>
+      </article>
+    </section>
+
+    <section id="stock">
+      <h2>Stock Transactions</h2>
+      <p>Record incoming and outgoing cellphone units.</p>
+
+      <form action="#stock" method="post">
+        <fieldset>
+          <legend>Record Stock Movement</legend>
+
+          <label for="transaction-model">Phone model</label>
+          <input type="text" id="transaction-model" name="transaction-model" required>
+
+          <label for="transaction-type">Transaction type</label>
+          <select id="transaction-type" name="transaction-type" required>
+            <option value="">Select a transaction</option>
+            <option value="stock-in">Stock In</option>
+            <option value="stock-out">Stock Out</option>
+          </select>
+
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" name="quantity" min="1" required>
+
+          <label for="transaction-notes">Notes</label>
+          <textarea id="transaction-notes" name="transaction-notes" rows="4" placeholder="Add transaction details"></textarea>
+
+          <button type="submit">Save Transaction</button>
+        </fieldset>
+      </form>
+    </section>
+
+    <section id="suppliers">
+      <h2>Suppliers</h2>
+      <article>
+        <h3>Current Suppliers</h3>
+        <ol>
+          <li>Northstar Mobile Distribution</li>
+          <li>Prime Gadget Supply</li>
+          <li>Metro Phone Trading</li>
+        </ol>
+        <button type="button">View Supplier Records</button>
+      </article>
+    </section>
+
+    <aside>
+      <h2>Low-Stock Alert</h2>
+      <p><strong>Xiaomi Redmi Note 14</strong> has only 2 units remaining.</p>
+      <button type="button">Review Low-Stock Items</button>
+    </aside>
+
+    <section id="login">
+      <h2>Staff Login</h2>
+      <p>Authorized store personnel can access the inventory system.</p>
+
+      <form action="#dashboard" method="post">
+        <fieldset>
+          <legend>Account Information</legend>
+
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+
+          <label for="role">Account role</label>
+          <select id="role" name="role" required>
+            <option value="">Select a role</option>
+            <option value="admin">Owner or Administrator</option>
+            <option value="manager">Inventory Manager</option>
+            <option value="staff">Store Staff</option>
+          </select>
+
+          <button type="submit">Log In</button>
+        </fieldset>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 CellStock. Initial HTML project structure for Web Systems and Technology.</p>
+  </footer>
+</body>
+</html>
