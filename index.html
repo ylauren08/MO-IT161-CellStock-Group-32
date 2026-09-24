@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Initial HTML structure for the CellStock cellphone inventory management system.">
+  <meta name="description" content="CellStock is an interactive cellphone inventory management system for tracking products, suppliers, stock levels, and inventory transactions.">
   <title>CellStock Inventory Management System</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -17,7 +17,12 @@
           <h1>CellStock</h1>
           <p>Cellphone Inventory Management System</p>
         </div>
-        <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">Dark mode</button>
+        <button type="button" class="theme-toggle" id="theme-toggle" role="switch"
+          aria-checked="false" aria-label="Switch to dark mode" title="Switch to dark mode">
+          <span class="theme-toggle-icon theme-toggle-moon" aria-hidden="true">&#9790;</span>
+          <span class="theme-toggle-icon theme-toggle-sun" aria-hidden="true">&#9728;</span>
+          <span class="theme-toggle-thumb" aria-hidden="true"></span>
+        </button>
       </div>
 
       <nav aria-label="Main navigation">
@@ -27,6 +32,7 @@
           <li><a href="#inventory">Inventory</a></li>
           <li><a href="#transactions">Stock Transactions</a></li>
           <li><a href="#suppliers">Suppliers</a></li>
+          <li><a href="#reports">Reports</a></li>
           <li><a href="#access">Staff Access</a></li>
         </ul>
       </nav>
@@ -52,7 +58,7 @@
           <ul class="hero-stats" aria-label="Current inventory highlights">
             <li><strong id="hero-brand-count">7</strong> brands tracked</li>
             <li><strong id="hero-unit-count">272</strong> units on hand</li>
-            <li><strong id="hero-low-count">5</strong> low-stock models</li>
+            <li><strong id="hero-low-count">5</strong> models need attention</li>
           </ul>
         </div>
       </div>
@@ -62,22 +68,66 @@
       <h2 id="dashboard-heading">Inventory Dashboard</h2>
       <p class="section-intro">Review the store's current inventory status and recent activity.</p>
 
-      <article id="featured-summary" class="panel">
-        <span class="label">Live Summary</span>
-        <h3>Inventory Summary</h3>
-        <ul class="summary-list">
-          <li><strong>Total phone models:</strong> <span id="model-count">49</span></li>
-          <li><strong>Available units:</strong> <span id="unit-count">272</span></li>
-          <li><strong>Low-stock models:</strong> <span id="low-stock-count">5</span></li>
-          <li><strong>Registered suppliers:</strong> 5</li>
-        </ul>
-        <a href="#inventory" class="action-primary">View cellphone inventory</a>
-      </article>
+      <div class="kpi-grid" aria-label="Inventory summary">
+        <article class="kpi-card">
+          <span class="kpi-label">Phone Models</span>
+          <strong id="model-count">49</strong>
+          <span>active catalog records</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Units On Hand</span>
+          <strong id="unit-count">272</strong>
+          <span>available across all models</span>
+        </article>
+        <article class="kpi-card kpi-warning">
+          <span class="kpi-label">Needs Attention</span>
+          <strong id="low-stock-count">5</strong>
+          <span>low or out-of-stock models</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Suppliers</span>
+          <strong id="supplier-count">5</strong>
+          <span>registered partners</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Inventory Cost</span>
+          <strong id="inventory-cost">PHP 0.00</strong>
+          <span>estimated acquisition value</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Retail Value</span>
+          <strong id="inventory-retail-value">PHP 0.00</strong>
+          <span>current selling value</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Stock In Today</span>
+          <strong id="stock-in-today">0</strong>
+          <span>units received today</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Stock Out Today</span>
+          <strong id="stock-out-today">0</strong>
+          <span>units released today</span>
+        </article>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="panel chart-panel" aria-labelledby="brand-chart-heading">
+          <span class="label">Catalog Mix</span>
+          <h3 id="brand-chart-heading">Models by Brand</h3>
+          <ul class="bar-chart" id="brand-chart"></ul>
+        </article>
+        <article class="panel chart-panel" aria-labelledby="stock-chart-heading">
+          <span class="label">Stock Health</span>
+          <h3 id="stock-chart-heading">Models by Status</h3>
+          <ul class="bar-chart" id="stock-chart"></ul>
+        </article>
+      </div>
 
       <aside class="alert-panel" aria-labelledby="alert-heading">
         <h3 id="alert-heading">Low-Stock Alert</h3>
         <p id="low-stock-message"><strong>Xiaomi 17 Ultra</strong> has only 2 units remaining, and <strong>HONOR Magic V6</strong> has 1.</p>
-        <p><a href="#inventory-list" class="action-secondary">Review the inventory list</a></p>
+        <button type="button" class="action-secondary" id="view-low-stock">View products needing attention</button>
       </aside>
     </section>
 
@@ -90,15 +140,15 @@
           <legend>Search and Filter Cellphones</legend>
 
           <p>
-            <label for="search-model">Phone model or brand</label><br>
+            <label for="search-model">SKU, phone model, or brand</label><br>
             <input
               type="search"
               id="search-model"
               name="search-model"
-              placeholder="Example: Samsung Galaxy"
+              placeholder="Example: P0008 or Samsung Galaxy"
               aria-describedby="search-hint"
             >
-            <small class="field-hint" id="search-hint">Enter any part of a brand or model name, then combine it with the optional filters.</small>
+            <small class="field-hint" id="search-hint">Enter a SKU or any part of a brand or model name, then combine it with the optional filters.</small>
           </p>
 
           <p>
@@ -119,11 +169,23 @@
             <label for="stock-filter">Stock status</label><br>
             <select id="stock-filter" name="stock-filter">
               <option value="">All stock levels</option>
+              <option value="attention">Needs Attention</option>
               <option value="available">In Stock</option>
               <option value="low">Low Stock</option>
               <option value="out">Out of Stock</option>
             </select>
           </p>
+
+          <div class="price-filter-group">
+            <p>
+              <label for="minimum-price">Minimum price</label><br>
+              <input type="number" id="minimum-price" name="minimum-price" min="0" step="1000" placeholder="PHP 0">
+            </p>
+            <p>
+              <label for="maximum-price">Maximum price</label><br>
+              <input type="number" id="maximum-price" name="maximum-price" min="0" step="1000" placeholder="No maximum">
+            </p>
+          </div>
 
           <div class="button-row">
             <button type="submit" class="action-primary" id="search-inventory">Search Inventory</button>
@@ -138,25 +200,38 @@
       </form>
 
       <article id="inventory-list" class="panel">
-        <span class="label">Product List</span>
-        <h3>Available Cellphones</h3>
+        <div class="panel-heading-row">
+          <div>
+            <span class="label">Product List</span>
+            <h3>Available Cellphones</h3>
+          </div>
+          <div class="button-row">
+            <button type="button" class="action-primary" id="toggle-product-editor" aria-expanded="false" aria-controls="product-editor">Add Product</button>
+            <button type="button" class="action-secondary" id="reset-demo-data">Reset Demo Data</button>
+          </div>
+        </div>
 
-        <table>
-          <caption>Current model catalog</caption>
-          <thead>
-            <tr>
-              <th scope="col">Brand</th>
-              <th scope="col">Model</th>
-              <th scope="col">Storage</th>
-              <th scope="col">Color</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody id="inventory-body">
-          </tbody>
-        </table>
+        <div class="table-wrapper">
+          <table class="inventory-table">
+            <caption>Current model catalog</caption>
+            <thead>
+              <tr>
+                <th scope="col"><button type="button" class="sort-button" data-sort="sku">SKU</button></th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="brand">Brand</button></th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="model">Model</button></th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="storage">Storage</button></th>
+                <th scope="col">Color</th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="supplier">Supplier</button></th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="price">Price</button></th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="quantity">Quantity</button></th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="status">Status</button></th>
+                <th scope="col"><button type="button" class="sort-button" data-sort="lastUpdated">Last Updated</button></th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-body"></tbody>
+          </table>
+        </div>
         <div class="pagination-bar" aria-label="Inventory pagination">
           <p id="pagination-status" role="status" aria-live="polite">Showing models 1-10 of 49</p>
           <div class="pagination-size">
@@ -164,7 +239,7 @@
             <select id="page-size" name="page-size" aria-describedby="page-size-hint">
               <option value="10">10</option>
               <option value="20">20</option>
-              <option value="50">All</option>
+              <option value="1000">All</option>
             </select>
           </div>
           <div class="pagination-actions">
@@ -174,11 +249,12 @@
         </div>
         <small class="field-hint" id="page-size-hint">Use Previous and Next to move through filtered results, or change how many rows appear.</small>
         <p class="catalog-note">Model names reflect current manufacturer lineups as of September 2026. Prices, colors, and quantities are sample data for this course project.</p>
+        <p class="catalog-note">Product and transaction changes are saved in this browser for the frontend demonstration. Reset Demo Data restores the original records.</p>
       </article>
 
-      <article class="panel" aria-labelledby="add-phone-heading">
+      <article class="panel product-editor" id="product-editor" aria-labelledby="add-phone-heading" hidden>
         <span class="label">New Record</span>
-        <h3 id="add-phone-heading">Add a Cellphone Record</h3>
+        <h3 id="add-phone-heading">Add Cellphone Record</h3>
         <p class="form-note">Complete all required product details before adding a record.</p>
 
         <form action="#inventory-list" method="get" id="add-phone-form" novalidate>
@@ -213,7 +289,13 @@
             </p>
 
             <p>
-              <label for="phone-price">Price in Philippine pesos</label><br>
+              <label for="phone-cost">Cost price in Philippine pesos</label><br>
+              <input type="number" id="phone-cost" name="phone-cost" min="0" step="0.01" required aria-describedby="cost-hint">
+              <small class="field-hint" id="cost-hint">Enter the store's acquisition cost per unit.</small>
+            </p>
+
+            <p>
+              <label for="phone-price">Selling price in Philippine pesos</label><br>
               <input type="number" id="phone-price" name="phone-price" min="0" step="0.01" required aria-describedby="price-hint">
               <small class="field-hint" id="price-hint">Use numbers only; decimals are allowed.</small>
             </p>
@@ -224,7 +306,23 @@
               <small class="field-hint" id="stock-hint">Use a whole number of zero or more units.</small>
             </p>
 
-            <button type="submit" class="action-primary">Add Cellphone Record</button>
+            <p>
+              <label for="reorder-level">Low-stock level</label><br>
+              <input type="number" id="reorder-level" name="reorder-level" min="0" step="1" value="2" required aria-describedby="reorder-hint">
+              <small class="field-hint" id="reorder-hint">The product is marked Low Stock at or below this quantity.</small>
+            </p>
+
+            <p>
+              <label for="product-supplier">Supplier</label><br>
+              <select id="product-supplier" name="product-supplier" required>
+                <option value="">Select a supplier</option>
+              </select>
+            </p>
+
+            <div class="button-row">
+              <button type="submit" class="action-primary" id="save-product">Add Cellphone Record</button>
+              <button type="button" class="action-secondary" id="cancel-product-editor">Cancel</button>
+            </div>
             <p id="add-phone-feedback" class="feedback-message" role="status" aria-live="polite" hidden></p>
           </fieldset>
         </form>
@@ -242,18 +340,32 @@
 
           <p>
             <label for="transaction-model">Phone model</label><br>
-            <input type="text" id="transaction-model" name="transaction-model" required aria-describedby="transaction-model-hint">
-            <small class="field-hint" id="transaction-model-hint">Enter a model exactly as shown in the inventory, such as iPhone 18 Pro.</small>
+            <select id="transaction-model" name="transaction-model" required aria-describedby="transaction-model-hint">
+              <option value="">Select a cellphone model</option>
+            </select>
+            <small class="field-hint" id="transaction-model-hint">Choose a product from the current inventory. <span id="transaction-stock"></span></small>
           </p>
 
           <p>
             <label for="transaction-type">Transaction type</label><br>
-            <select id="transaction-type" name="transaction-type" required>
-              <option value="">Select a transaction</option>
-              <option value="stock-in">Stock In</option>
-              <option value="stock-out">Stock Out</option>
-            </select>
-          </p>
+              <select id="transaction-type" name="transaction-type" required>
+                <option value="">Select a transaction</option>
+                <option value="stock-in">Stock In</option>
+                <option value="stock-out">Stock Out</option>
+              </select>
+            </p>
+
+            <p>
+              <label for="transaction-reason">Movement reason</label><br>
+              <select id="transaction-reason" name="transaction-reason" required>
+                <option value="">Select a reason</option>
+                <option value="Supplier Delivery">Supplier Delivery</option>
+                <option value="Sale">Sale</option>
+                <option value="Damaged">Damaged</option>
+                <option value="Return">Return</option>
+                <option value="Inventory Adjustment">Inventory Adjustment</option>
+              </select>
+            </p>
 
           <p>
             <label for="quantity">Quantity</label><br>
@@ -264,6 +376,16 @@
           <p>
             <label for="transaction-date">Transaction date</label><br>
             <input type="date" id="transaction-date" name="transaction-date" required>
+          </p>
+
+          <p>
+            <label for="transaction-staff">Handled by</label><br>
+            <select id="transaction-staff" name="transaction-staff" required>
+              <option value="">Select a staff role</option>
+              <option value="Owner or Administrator">Owner or Administrator</option>
+              <option value="Inventory Manager">Inventory Manager</option>
+              <option value="Store Staff">Store Staff</option>
+            </select>
           </p>
 
           <p>
@@ -284,11 +406,37 @@
       <article id="transaction-history" class="panel">
         <span class="label">Recent Activity</span>
         <h3>Recent Transactions</h3>
-        <ol id="transaction-list">
-          <li>Stock In: 4 Apple iPhone 18 Pro units</li>
-          <li>Stock Out: 2 Samsung Galaxy S26 Ultra units</li>
-          <li>Stock In: 3 OPPO Find N6 units</li>
-        </ol>
+        <div class="history-toolbar">
+          <div class="segmented-control" role="group" aria-label="Filter transactions by type">
+            <button type="button" class="segment-button is-active" data-transaction-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="segment-button" data-transaction-filter="stock-in" aria-pressed="false">Stock In</button>
+            <button type="button" class="segment-button" data-transaction-filter="stock-out" aria-pressed="false">Stock Out</button>
+            <button type="button" class="segment-button" data-transaction-filter="adjustment" aria-pressed="false">Adjustments</button>
+          </div>
+          <p>
+            <label for="transaction-search">Search transactions</label><br>
+            <input type="search" id="transaction-search" placeholder="ID, product, reason, staff, or note">
+          </p>
+        </div>
+        <p id="transaction-history-status" class="field-hint" role="status" aria-live="polite"></p>
+        <div class="table-wrapper">
+          <table class="transaction-table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Transaction Date</th>
+                <th scope="col">Recorded At</th>
+                <th scope="col">Product</th>
+                <th scope="col">Type</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Staff</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="transaction-list"></tbody>
+          </table>
+        </div>
       </article>
     </section>
 
@@ -296,21 +444,121 @@
       <h2 id="suppliers-heading">Suppliers</h2>
       <p class="section-intro">Review the companies that provide cellphone units to the store.</p>
 
-      <article class="panel">
-        <span class="label">Partners</span>
-        <h3>Current Supplier Records</h3>
-        <ul>
-          <li><strong>Northstar Mobile Distribution:</strong> Apple and Samsung units</li>
-          <li><strong>Prime Gadget Supply:</strong> Xiaomi and OPPO units</li>
-          <li><strong>Metro Phone Trading:</strong> Mixed cellphone brands</li>
-        </ul>
-        <button type="button" class="action-secondary" id="toggle-supplier-details" aria-expanded="false" aria-controls="supplier-contact-list">Show contact details</button>
-        <ul id="supplier-contact-list" hidden>
-          <li><strong>Northstar:</strong> orders@northstar.example | (02) 8123 4501</li>
-          <li><strong>Prime Gadget:</strong> supply@primegadget.example | (02) 8123 4502</li>
-          <li><strong>Metro Phone:</strong> sales@metrophonetrading.example | (02) 8123 4503</li>
-        </ul>
+      <article class="panel" id="supplier-list-panel">
+        <div class="panel-heading-row">
+          <div>
+            <span class="label">Partners</span>
+            <h3>Current Supplier Records</h3>
+          </div>
+          <button type="button" class="action-primary" id="toggle-supplier-editor" aria-expanded="false" aria-controls="supplier-editor">Add Supplier</button>
+        </div>
+        <p id="supplier-feedback" class="feedback-message" role="status" aria-live="polite">Showing all registered suppliers.</p>
+        <div class="table-wrapper">
+          <table class="supplier-table">
+            <thead>
+              <tr>
+                <th scope="col">Supplier</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Brands</th>
+                <th scope="col">Products</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="supplier-body"></tbody>
+          </table>
+        </div>
         <p class="field-hint">Supplier contacts are sample information for frontend demonstration only.</p>
+      </article>
+
+      <article class="panel product-editor" id="supplier-editor" aria-labelledby="supplier-editor-heading" hidden>
+        <span class="label">Supplier Record</span>
+        <h3 id="supplier-editor-heading">Add Supplier</h3>
+        <form action="#supplier-list-panel" method="get" id="supplier-form" novalidate>
+          <fieldset class="form-panel">
+            <legend>Supplier Details</legend>
+            <p><label for="supplier-name">Supplier name</label><br><input type="text" id="supplier-name" required></p>
+            <p><label for="supplier-contact">Contact person</label><br><input type="text" id="supplier-contact" required></p>
+            <p><label for="supplier-email">Email address</label><br><input type="email" id="supplier-email" required></p>
+            <p><label for="supplier-phone">Phone number</label><br><input type="tel" id="supplier-phone" required></p>
+            <p><label for="supplier-address">Business address</label><br><textarea id="supplier-address" rows="3" required></textarea></p>
+            <p>
+              <label for="supplier-brands">Brands supplied</label><br>
+              <input type="text" id="supplier-brands" required aria-describedby="supplier-brands-hint">
+              <small class="field-hint" id="supplier-brands-hint">Separate multiple brands with commas.</small>
+            </p>
+            <p>
+              <label for="supplier-status">Status</label><br>
+              <select id="supplier-status" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </p>
+            <div class="button-row">
+              <button type="submit" class="action-primary" id="save-supplier">Add Supplier</button>
+              <button type="button" class="action-secondary" id="cancel-supplier-editor">Cancel</button>
+            </div>
+            <p id="supplier-form-feedback" class="feedback-message" role="status" aria-live="polite" hidden></p>
+          </fieldset>
+        </form>
+      </article>
+    </section>
+
+    <section id="reports" aria-labelledby="reports-heading">
+      <h2 id="reports-heading">Reports</h2>
+      <p class="section-intro">Filter current browser data, review operational totals, and export records for analysis.</p>
+
+      <article class="panel report-panel" id="report-panel">
+        <div class="panel-heading-row">
+          <div>
+            <span class="label">Reporting Workspace</span>
+            <h3>Inventory and Movement Summary</h3>
+          </div>
+          <div class="button-row export-actions">
+            <button type="button" class="action-secondary" data-export="inventory">Export Inventory CSV</button>
+            <button type="button" class="action-secondary" data-export="suppliers">Export Suppliers CSV</button>
+            <button type="button" class="action-secondary" data-export="transactions">Export Transactions CSV</button>
+            <button type="button" class="action-primary" id="print-report">Print Report</button>
+          </div>
+        </div>
+
+        <form id="report-filter-form" action="#reports" method="get">
+          <fieldset class="filter-panel report-filters">
+            <legend>Report Filters</legend>
+            <p><label for="report-date-from">From date</label><br><input type="date" id="report-date-from"></p>
+            <p><label for="report-date-to">To date</label><br><input type="date" id="report-date-to"></p>
+            <p><label for="report-brand">Brand</label><br><select id="report-brand"><option value="all">All brands</option></select></p>
+            <p><label for="report-supplier">Supplier</label><br><select id="report-supplier"><option value="all">All suppliers</option></select></p>
+            <p><label for="report-stock-status">Stock status</label><br><select id="report-stock-status"><option value="all">All statuses</option><option value="available">In Stock</option><option value="low">Low Stock</option><option value="out">Out of Stock</option></select></p>
+            <p><label for="report-type">Movement type</label><br><select id="report-type"><option value="all">All types</option><option value="stock-in">Stock In</option><option value="stock-out">Stock Out</option><option value="adjustment">Adjustment</option></select></p>
+            <p><label for="report-staff">Staff</label><br><select id="report-staff"><option value="all">All staff</option></select></p>
+            <div class="button-row"><button type="submit" class="action-primary">Apply Filters</button><button type="reset" class="action-secondary">Reset</button></div>
+          </fieldset>
+        </form>
+
+        <div class="report-summary" aria-label="Filtered report summary">
+          <article><span>Products</span><strong id="report-products">0</strong></article>
+          <article><span>Units On Hand</span><strong id="report-units">0</strong></article>
+          <article><span>Inventory Cost</span><strong id="report-cost">PHP 0.00</strong></article>
+          <article><span>Retail Value</span><strong id="report-retail">PHP 0.00</strong></article>
+          <article><span>Movements</span><strong id="report-movements">0</strong></article>
+          <article><span>Net Movement</span><strong id="report-net">0</strong></article>
+        </div>
+        <p id="report-status" class="field-hint" role="status" aria-live="polite"></p>
+        <div class="table-wrapper report-table-block report-inventory-wrapper">
+          <table class="report-table">
+            <caption>Filtered inventory records</caption>
+            <thead><tr><th scope="col">SKU</th><th scope="col">Product</th><th scope="col">Supplier</th><th scope="col">Quantity</th><th scope="col">Status</th><th scope="col">Cost Value</th><th scope="col">Retail Value</th></tr></thead>
+            <tbody id="report-inventory-list"></tbody>
+          </table>
+        </div>
+        <div class="table-wrapper">
+          <table class="report-table">
+            <caption>Filtered transaction activity</caption>
+            <thead><tr><th scope="col">ID</th><th scope="col">Date</th><th scope="col">Product</th><th scope="col">Type</th><th scope="col">Reason</th><th scope="col">Quantity</th><th scope="col">Staff</th></tr></thead>
+            <tbody id="report-transaction-list"></tbody>
+          </table>
+        </div>
       </article>
     </section>
 
@@ -349,9 +597,62 @@
         </fieldset>
       </form>
 
-      <p><em>This frontend currently demonstrates the planned account interface. Secure verification and data storage will be added during backend development.</em></p>
+      <p><em>This frontend currently demonstrates the planned account interface. Secure verification and shared database storage will be added during backend development.</em></p>
     </section>
   </main>
+
+  <dialog id="delete-dialog" aria-labelledby="delete-dialog-title">
+    <form method="dialog">
+      <h2 id="delete-dialog-title">Delete Product</h2>
+      <p id="delete-dialog-message">This action will remove the selected product from the inventory.</p>
+      <div class="button-row dialog-actions">
+        <button type="submit" class="action-secondary" value="cancel" formnovalidate>Cancel</button>
+        <button type="submit" class="action-danger" id="confirm-delete" value="confirm">Delete Product</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="supplier-view-dialog" aria-labelledby="supplier-view-title">
+    <form method="dialog">
+      <h2 id="supplier-view-title">Supplier Details</h2>
+      <dl class="detail-list" id="supplier-view-details"></dl>
+      <div class="button-row dialog-actions">
+        <button type="submit" class="action-primary" value="close">Close</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="product-view-dialog" aria-labelledby="product-view-title">
+    <form method="dialog">
+      <h2 id="product-view-title">Product Details</h2>
+      <dl class="detail-list" id="product-view-details"></dl>
+      <h3>Recent Product Transactions</h3>
+      <ul class="detail-history" id="product-view-history"></ul>
+      <div class="button-row dialog-actions">
+        <button type="submit" class="action-primary" value="close">Close</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="adjust-stock-dialog" aria-labelledby="adjust-stock-title">
+    <form method="dialog" id="adjust-stock-form">
+      <h2 id="adjust-stock-title">Adjust Stock Quantity</h2>
+      <p id="adjust-stock-product"></p>
+      <p><label for="adjust-stock-quantity">Correct quantity on hand</label><br><input type="number" id="adjust-stock-quantity" min="0" step="1" required></p>
+      <p><label for="adjust-stock-reason">Adjustment reason</label><br><select id="adjust-stock-reason" required><option value="">Select a reason</option><option value="Physical Count Correction">Physical Count Correction</option><option value="Damaged Stock">Damaged Stock</option><option value="Returned Stock">Returned Stock</option><option value="Data Correction">Data Correction</option></select></p>
+      <p><label for="adjust-stock-notes">Notes</label><br><textarea id="adjust-stock-notes" rows="3" placeholder="Add supporting details"></textarea></p>
+      <p id="adjust-stock-feedback" class="feedback-message" role="status" aria-live="polite" hidden></p>
+      <div class="button-row dialog-actions">
+        <button type="submit" class="action-secondary" value="cancel" formnovalidate>Cancel</button>
+        <button type="submit" class="action-primary" id="confirm-adjust-stock" value="confirm">Save Adjustment</button>
+      </div>
+    </form>
+  </dialog>
+
+  <aside class="undo-notice" id="undo-notice" role="status" aria-live="polite" hidden>
+    <span id="undo-message"></span>
+    <button type="button" id="undo-delete">Undo</button>
+  </aside>
 
   <footer>
     <p>&copy; 2026 CellStock. Web Systems and Technology project.</p>
@@ -361,6 +662,13 @@
     </nav>
   </footer>
   <script src="js/inventory-data.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/suppliers.js"></script>
+  <script src="js/transactions.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/reports.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

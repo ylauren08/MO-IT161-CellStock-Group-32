@@ -392,3 +392,92 @@ window.cellstockProducts = [
     "quantity": 9
   }
 ];
+
+window.cellstockSuppliers = [
+  {
+    id: "SUP-001",
+    name: "Northstar Mobile Distribution",
+    contact: "Maria Santos",
+    email: "orders@northstar.example",
+    phone: "(02) 8123 4501",
+    address: "Makati City, Metro Manila",
+    brands: ["Apple", "Samsung"],
+    status: "active"
+  },
+  {
+    id: "SUP-002",
+    name: "Prime Gadget Supply",
+    contact: "Daniel Cruz",
+    email: "supply@primegadget.example",
+    phone: "(02) 8123 4502",
+    address: "Pasig City, Metro Manila",
+    brands: ["Xiaomi", "OPPO"],
+    status: "active"
+  },
+  {
+    id: "SUP-003",
+    name: "Metro Phone Trading",
+    contact: "Leah Reyes",
+    email: "sales@metrophonetrading.example",
+    phone: "(02) 8123 4503",
+    address: "Quezon City, Metro Manila",
+    brands: ["vivo", "realme"],
+    status: "active"
+  },
+  {
+    id: "SUP-004",
+    name: "Horizon Device Partners",
+    contact: "Paolo Garcia",
+    email: "accounts@horizondevices.example",
+    phone: "(02) 8123 4504",
+    address: "Taguig City, Metro Manila",
+    brands: ["HONOR"],
+    status: "active"
+  },
+  {
+    id: "SUP-005",
+    name: "Pacific Mobile Wholesale",
+    contact: "Anne Lim",
+    email: "orders@pacificmobile.example",
+    phone: "(02) 8123 4505",
+    address: "Manila City, Metro Manila",
+    brands: ["Mixed brands"],
+    status: "inactive"
+  }
+];
+
+window.cellstockTransactions = [
+  {
+    id: "TXN-000003",
+    type: "stock-in",
+    productName: "OPPO Find N6",
+    quantity: 3,
+    date: "2026-09-22",
+    timestamp: "2026-09-22T14:20:00+08:00",
+    reason: "Supplier Delivery",
+    notes: "Delivery from Prime Gadget Supply",
+    staff: "Inventory Manager"
+  },
+  {
+    id: "TXN-000002",
+    type: "stock-out",
+    productName: "Samsung Galaxy S26 Ultra",
+    quantity: 2,
+    date: "2026-09-21",
+    timestamp: "2026-09-21T11:15:00+08:00",
+    reason: "Sale",
+    notes: "Released to the sales floor",
+    staff: "Store Staff"
+  },
+  {
+    id: "TXN-000001",
+    type: "stock-in",
+    productName: "Apple iPhone 18 Pro",
+    quantity: 4,
+    date: "2026-09-20",
+    timestamp: "2026-09-20T09:30:00+08:00",
+    reason: "Supplier Delivery",
+    notes: "Opening inventory record",
+    staff: "Inventory Manager"
+  }
+];
