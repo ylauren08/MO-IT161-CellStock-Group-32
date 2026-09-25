@@ -1,4 +1,14 @@
-* {
+    :root {
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-control: 0.9375rem;
+      --font-size-base: 1rem;
+      --font-size-h3: 1.25rem;
+      --font-size-h2: 1.625rem;
+      --font-size-display: 2.375rem;
+    }
+
+    * {
       box-sizing: border-box;
     }
 
@@ -7,7 +17,8 @@
       background-color: #f4f7fb;
       color: #172033;
       font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
+      font-size: var(--font-size-base);
+      line-height: 1.5;
     }
 
     body > a {
@@ -127,14 +138,14 @@
     }
 
     header h1 {
-      font-size: 2.35rem;
+      font-size: 2.25rem;
       line-height: 1.1;
       margin-bottom: 8px;
     }
 
     header p {
       color: #d9e2ec;
-      font-size: 1.05rem;
+      font-size: var(--font-size-base);
     }
 
     header nav ul {
@@ -153,6 +164,7 @@
 
     header nav a {
       color: #d9f8fb;
+      font-size: var(--font-size-control);
       font-weight: bold;
       text-decoration: none;
     }
@@ -219,7 +231,7 @@
 
     .hero-eyebrow {
       color: #7ee7f0;
-      font-size: 0.78rem;
+      font-size: var(--font-size-xs);
       font-weight: bold;
       letter-spacing: 0;
       margin: 0 0 8px;
@@ -228,7 +240,7 @@
 
     .hero-content h2 {
       color: #ffffff;
-      font-size: 2.45rem;
+      font-size: var(--font-size-display);
       line-height: 1.12;
       margin: 0 0 14px;
       max-width: 500px;
@@ -236,7 +248,7 @@
 
     .hero-description {
       color: #eaf5f7;
-      font-size: 1.05rem;
+      font-size: var(--font-size-base);
       margin: 0 0 20px;
       max-width: 470px;
     }
@@ -259,7 +271,7 @@
     .hero-stats strong {
       color: #ffffff;
       display: block;
-      font-size: 1.35rem;
+      font-size: var(--font-size-h3);
       line-height: 1.1;
     }
 
@@ -270,10 +282,14 @@
       margin-top: 8px;
     }
 
+    h3 {
+      font-size: var(--font-size-h3);
+    }
+
     section > h2 {
       border-left: 4px solid #21c7d9;
       color: #102a43;
-      font-size: 1.65rem;
+      font-size: var(--font-size-h2);
       margin-top: 0;
       padding-left: 12px;
     }
@@ -318,20 +334,19 @@
     .kpi-card strong {
       color: #102a43;
       display: block;
-      font-size: 2rem;
+      font-size: 1.5rem;
       line-height: 1.15;
       margin: 5px 0;
     }
 
     #inventory-cost,
     #inventory-retail-value {
-      font-size: 1.35rem;
       overflow-wrap: anywhere;
     }
 
     .kpi-card > span:last-child {
       color: #627d98;
-      font-size: 0.86rem;
+      font-size: var(--font-size-sm);
     }
 
     .kpi-card.kpi-warning {
@@ -340,7 +355,7 @@
 
     .kpi-label {
       color: #486581;
-      font-size: 0.76rem;
+      font-size: var(--font-size-xs);
       font-weight: bold;
       text-transform: uppercase;
     }
@@ -366,7 +381,7 @@
     .bar-chart li {
       align-items: center;
       display: grid;
-      font-size: 0.88rem;
+      font-size: var(--font-size-sm);
       gap: 10px;
       grid-template-columns: minmax(76px, 110px) 1fr 28px;
     }
@@ -404,7 +419,7 @@
       background-color: #0b7285;
       color: #ffffff;
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: var(--font-size-xs);
       font-weight: bold;
       padding: 5px 10px;
       text-transform: uppercase;
@@ -416,6 +431,7 @@
       border-radius: 4px;
       color: #ffffff;
       display: inline-block;
+      font-size: var(--font-size-control);
       font-weight: bold;
       margin-top: 6px;
       padding: 9px 14px;
@@ -436,6 +452,7 @@
       color: #714000;
       cursor: pointer;
       display: inline-block;
+      font-size: var(--font-size-control);
       font-weight: bold;
       margin-top: 6px;
       padding: 7px 12px;
@@ -454,6 +471,7 @@
       border: 2px solid #b42318;
       border-radius: 4px;
       color: #ffffff;
+      font-size: var(--font-size-control);
       font-weight: bold;
       margin-top: 6px;
       padding: 9px 14px;
@@ -468,7 +486,7 @@
 
     .status {
       display: inline-block;
-      font-size: 0.8rem;
+      font-size: var(--font-size-sm);
       font-weight: bold;
       padding: 4px 8px;
     }
@@ -500,7 +518,7 @@
     .field-hint {
       color: #627d98;
       display: block;
-      font-size: 0.86rem;
+      font-size: var(--font-size-sm);
       margin-top: 5px;
       max-width: 560px;
     }
@@ -569,8 +587,14 @@
       width: 100%;
     }
 
+    .inventory-table,
+    .transaction-table,
+    .supplier-table,
+    .report-table {
+      font-size: 0.8125rem;
+    }
+
     .inventory-table {
-      font-size: 0.75rem;
       min-width: 0;
       table-layout: fixed;
     }
@@ -606,7 +630,7 @@
 
     .inventory-table .table-action {
       display: block;
-      font-size: 0.75rem;
+      font-size: inherit;
       padding: 2px 0;
     }
 
@@ -615,7 +639,6 @@
     }
 
     .transaction-table {
-      font-size: 0.72rem;
       min-width: 0;
       table-layout: fixed;
     }
@@ -743,7 +766,7 @@
 
     .catalog-note {
       color: #627d98;
-      font-size: 0.9rem;
+      font-size: var(--font-size-sm);
       margin-top: 14px;
     }
 
@@ -802,6 +825,7 @@
 
     legend {
       color: #102a43;
+      font-size: var(--font-size-base);
       font-weight: bold;
       padding: 0 8px;
     }
@@ -812,6 +836,7 @@
       border: 1px solid #8fa2b8;
       border-radius: 4px;
       font: inherit;
+      font-size: var(--font-size-control);
       max-width: 100%;
       padding: 9px;
       width: 420px;
@@ -922,6 +947,7 @@
       border: 0;
       border-right: 1px solid #8fa2b8;
       color: #334e68;
+      font-size: var(--font-size-control);
       font-weight: bold;
       margin: 0;
       padding: 9px 13px;
@@ -995,7 +1021,7 @@
     .report-summary span {
       color: #486581;
       display: block;
-      font-size: 0.72rem;
+      font-size: var(--font-size-xs);
       font-weight: bold;
       text-transform: uppercase;
     }
@@ -1003,7 +1029,7 @@
     .report-summary strong {
       color: #102a43;
       display: block;
-      font-size: 1.15rem;
+      font-size: var(--font-size-h3);
       overflow-wrap: anywhere;
     }
 
@@ -1260,7 +1286,7 @@
         border: 0;
         border-bottom: 1px solid #e3eaf2;
         display: grid;
-        font-size: 0.9rem;
+        font-size: var(--font-size-control);
         gap: 14px;
         grid-template-columns: 110px minmax(0, 1fr);
         padding: 8px 12px;
@@ -1269,7 +1295,7 @@
       .inventory-table td::before {
         color: #486581;
         content: attr(data-label);
-        font-size: 0.75rem;
+        font-size: var(--font-size-xs);
         font-weight: bold;
         text-transform: uppercase;
       }
@@ -1285,7 +1311,7 @@
 
       .inventory-table .row-actions .table-action {
         display: inline-block;
-        font-size: 0.88rem;
+        font-size: var(--font-size-sm);
         margin-right: 12px;
       }
 
@@ -1330,7 +1356,7 @@
         border: 0;
         border-bottom: 1px solid #e3eaf2;
         display: grid;
-        font-size: 0.9rem;
+        font-size: var(--font-size-control);
         gap: 14px;
         grid-template-columns: 130px minmax(0, 1fr);
         padding: 8px 12px;
@@ -1339,7 +1365,7 @@
       .transaction-table td::before {
         color: #486581;
         content: attr(data-label);
-        font-size: 0.75rem;
+        font-size: var(--font-size-xs);
         font-weight: bold;
         text-transform: uppercase;
       }
@@ -1390,7 +1416,7 @@
       }
 
       header h1 {
-        font-size: 2.2rem;
+        font-size: 2rem;
       }
 
       .header-top {
@@ -1420,7 +1446,7 @@
       }
 
       .hero-content h2 {
-        font-size: 2rem;
+        font-size: 1.875rem;
       }
 
       .kpi-grid {
