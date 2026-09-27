@@ -211,6 +211,22 @@
           </div>
         </div>
 
+        <!-- Stock Status Guide Legend -->
+        <div class="status-guide" aria-label="Stock status key">
+          <div class="status-guide-item">
+            <span class="status status-available">In Stock</span>
+            <p>Quantity is above reorder level. Units are ready for immediate sale.</p>
+          </div>
+          <div class="status-guide-item">
+            <span class="status status-low">Low Stock</span>
+            <p>Quantity is at or below its reorder level. Prepare a supplier reorder.</p>
+          </div>
+          <div class="status-guide-item">
+            <span class="status status-out">Out of Stock</span>
+            <p>Quantity is 0 units available. Needs immediate inventory replenishment.</p>
+          </div>
+        </div>
+
         <div class="table-wrapper">
           <table class="inventory-table">
             <caption>Current model catalog</caption>
@@ -348,24 +364,24 @@
 
           <p>
             <label for="transaction-type">Transaction type</label><br>
-              <select id="transaction-type" name="transaction-type" required>
-                <option value="">Select a transaction</option>
-                <option value="stock-in">Stock In</option>
-                <option value="stock-out">Stock Out</option>
-              </select>
-            </p>
+            <select id="transaction-type" name="transaction-type" required>
+              <option value="">Select a transaction</option>
+              <option value="stock-in">Stock In</option>
+              <option value="stock-out">Stock Out</option>
+            </select>
+          </p>
 
-            <p>
-              <label for="transaction-reason">Movement reason</label><br>
-              <select id="transaction-reason" name="transaction-reason" required>
-                <option value="">Select a reason</option>
-                <option value="Supplier Delivery">Supplier Delivery</option>
-                <option value="Sale">Sale</option>
-                <option value="Damaged">Damaged</option>
-                <option value="Return">Return</option>
-                <option value="Inventory Adjustment">Inventory Adjustment</option>
-              </select>
-            </p>
+          <p>
+            <label for="transaction-reason">Movement reason</label><br>
+            <select id="transaction-reason" name="transaction-reason" required>
+              <option value="">Select a reason</option>
+              <option value="Supplier Delivery">Supplier Delivery</option>
+              <option value="Sale">Sale</option>
+              <option value="Damaged">Damaged</option>
+              <option value="Return">Return</option>
+              <option value="Inventory Adjustment">Inventory Adjustment</option>
+            </select>
+          </p>
 
           <p>
             <label for="quantity">Quantity</label><br>
@@ -661,6 +677,7 @@
       <a href="#main-content">Back to top</a>
     </nav>
   </footer>
+
   <script src="js/inventory-data.js"></script>
   <script src="js/products.js"></script>
   <script src="js/suppliers.js"></script>

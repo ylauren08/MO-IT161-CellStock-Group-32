@@ -390,44 +390,7 @@ window.cellstockProducts = [
     "color": "Lunar Grey",
     "price": 17990,
     "quantity": 9
-  },
-  {
-    "sku": "P0050",
-    "brand": "Apple",
-    "model": "iPhone 16e",
-    "storage": 128,
-    "color": "Midnight",
-    "costPrice": 29990,
-    "price": 34990,
-    "quantity": 7,
-    "reorderLevel": 3,
-    "supplierId": "SUP-001"
-  },
-  {
-    "sku": "P0051",
-    "brand": "Samsung",
-    "model": "Galaxy A17 5G",
-    "storage": 128,
-    "color": "Pink Gold",
-    "costPrice": 8990,
-    "price": 11990,
-    "quantity": 2,
-    "reorderLevel": 3,
-    "supplierId": "SUP-001"
-  },
-  {
-    "sku": "P0052",
-    "brand": "Xiaomi",
-    "model": "REDMI 15C",
-    "storage": 128,
-    "color": "Ocean Blue",
-    "costPrice": 5490,
-    "price": 6990,
-    "quantity": 0,
-    "reorderLevel": 3,
-    "supplierId": "SUP-002"
   }
-
 ];
 
 window.cellstockSuppliers = [
