@@ -1,0 +1,311 @@
+/* Small interface refinements kept separate from the main application styles. */
+.header-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+header .app-version {
+  color: #9fb3c8;
+  font-size: var(--font-size-xs);
+  margin-top: 4px;
+}
+
+[data-dashboard-action]:focus-visible {
+  outline: 3px solid #ffd166;
+  outline-offset: 3px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #f4a62a;
+  outline-offset: 2px;
+}
+
+[data-dashboard-action] {
+  cursor: pointer;
+  position: relative;
+}
+
+body.motion-ready [data-dashboard-action] {
+  transition: background-color 240ms ease, border-color 160ms ease,
+    box-shadow 160ms ease, color 240ms ease, transform 160ms ease;
+}
+
+[data-dashboard-action]::after {
+  color: #0b7285;
+  content: "\2192";
+  font-size: 1.15rem;
+  font-weight: bold;
+  position: absolute;
+  right: 16px;
+  top: 14px;
+  transition: transform 160ms ease;
+}
+
+[data-dashboard-action]:hover,
+[data-dashboard-action]:focus-visible {
+  border-color: #21a7b8;
+  box-shadow: 0 8px 20px rgba(16, 42, 67, 0.12);
+  transform: translateY(-2px);
+}
+
+[data-dashboard-action]:hover::after,
+[data-dashboard-action]:focus-visible::after {
+  transform: translateX(3px);
+}
+
+.app-progress {
+  background-color: #21c7d9;
+  box-shadow: 0 1px 5px rgba(33, 199, 217, 0.45);
+  height: 3px;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 160ms ease;
+  width: 100%;
+  z-index: 30;
+}
+
+.app-progress.is-active {
+  animation: app-progress 1.4s ease-in-out infinite;
+  opacity: 1;
+}
+
+.toast-region {
+  bottom: 24px;
+  display: grid;
+  gap: 10px;
+  max-width: min(380px, calc(100vw - 32px));
+  pointer-events: none;
+  position: fixed;
+  right: 24px;
+  z-index: 20;
+}
+
+.toast {
+  align-items: start;
+  animation: toast-in 220ms ease-out;
+  background-color: #ffffff;
+  border: 1px solid #cad5e2;
+  border-left: 5px solid #238455;
+  border-radius: 6px;
+  box-shadow: 0 12px 28px rgba(16, 42, 67, 0.22);
+  color: #172033;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto 1fr auto;
+  padding: 12px 12px 12px 14px;
+  pointer-events: auto;
+}
+
+.toast-error {
+  border-left-color: #b42318;
+}
+
+.toast-icon {
+  color: #238455;
+  font-weight: bold;
+}
+
+.toast-error .toast-icon {
+  color: #b42318;
+}
+
+.toast-message {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.toast-close {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #486581;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.25rem;
+  height: 24px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  width: 24px;
+}
+
+.toast.is-leaving {
+  opacity: 0;
+  transform: translateX(18px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.table-wrapper {
+  border-bottom: 1px solid #cad5e2;
+}
+
+tbody tr {
+  transition: background-color 140ms ease;
+}
+
+tbody tr:hover td {
+  background-color: #eef8fa;
+}
+
+td[colspan] {
+  color: #627d98;
+  font-style: italic;
+  padding: 28px 16px;
+  text-align: center;
+}
+
+body.dark-theme [data-dashboard-action]::after {
+  color: #74dce7;
+}
+
+body.dark-theme .toast {
+  background-color: #1d2b3a;
+  border-color: #52697d;
+  border-left-color: #50b887;
+  color: #f4f7fb;
+}
+
+body.dark-theme .toast-error {
+  border-left-color: #ff8a83;
+}
+
+body.dark-theme .toast-close {
+  color: #d9e2ec;
+}
+
+body.dark-theme tbody tr:hover td {
+  background-color: #263d52;
+}
+
+@media (min-width: 901px) {
+  .table-wrapper thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .header-top {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .header-top > div:first-child {
+    min-width: 0;
+  }
+
+  .header-actions {
+    align-self: flex-start;
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  #main-navigation {
+    border-top: 1px solid #486581;
+    margin-top: 16px;
+    padding-top: 8px;
+  }
+
+  #main-navigation ul {
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+  }
+
+  #main-navigation a {
+    border-bottom: 1px solid #334e68;
+    display: block;
+    padding: 11px 4px;
+  }
+
+  #main-navigation li:last-child a {
+    border-bottom: 0;
+  }
+
+  .theme-toggle {
+    align-self: auto;
+  }
+
+  .toast-region {
+    bottom: 74px;
+    right: 16px;
+  }
+}
+
+@media (max-width: 430px) {
+  .header-top {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .theme-toggle {
+    flex-basis: 58px;
+    width: 58px;
+  }
+
+  .theme-toggle[aria-checked="true"] .theme-toggle-thumb {
+    transform: translateX(22px);
+  }
+
+  .toast-region {
+    left: 16px;
+    max-width: none;
+  }
+
+  #main-navigation ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes app-progress {
+  0% { transform: scaleX(0); }
+  45% { transform: scaleX(0.72); }
+  100% { transform: scaleX(1); }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-dashboard-action]:hover,
+  [data-dashboard-action]:focus-visible {
+    transform: none;
+  }
+
+  .app-progress.is-active,
+  .toast {
+    animation: none;
+  }
+
+}
+
+@media print {
+  .app-progress,
+  .toast-region {
+    display: none !important;
+  }
+}

@@ -59,6 +59,10 @@ test("CellStock product backend supports the complete persistence workflow", asy
       const scriptResponse = await fetch(baseUrl + "/js/api.js");
       assert.equal(scriptResponse.status, 200);
       assert.match(await scriptResponse.text(), /CellStockApi/);
+
+      const versionResponse = await fetch(baseUrl + "/api/version");
+      assert.equal(versionResponse.status, 200);
+      assert.equal((await versionResponse.json()).version, "2.1.5");
     });
 
     await context.test("retrieves persisted products without browser caching", async () => {

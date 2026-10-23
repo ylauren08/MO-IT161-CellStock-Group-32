@@ -3,6 +3,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const packageDetails = require("./package.json");
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -14,9 +15,16 @@ app.use("/api", (request, response, next) => {
   response.set("Cache-Control", "no-store");
   next();
 });
-app.use("/assets", express.static(path.join(__dirname, "assets")));
-app.use("/css", express.static(path.join(__dirname, "css")));
-app.use("/js", express.static(path.join(__dirname, "js")));
+const staticOptions = {
+  etag: false,
+  lastModified: false,
+  setHeaders: function (response) {
+    response.set("Cache-Control", "no-store");
+  }
+};
+app.use("/assets", express.static(path.join(__dirname, "assets"), staticOptions));
+app.use("/css", express.static(path.join(__dirname, "css"), staticOptions));
+app.use("/js", express.static(path.join(__dirname, "js"), staticOptions));
 
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
@@ -139,7 +147,12 @@ app.post("/api/products", (request, response) => {
   }
 });
 
+app.get("/api/version", (request, response) => {
+  response.json({ version: packageDetails.version });
+});
+
 app.get("/", (request, response) => {
+  response.set("Cache-Control", "no-store");
   response.sendFile(path.join(__dirname, "index.html"));
 });
 

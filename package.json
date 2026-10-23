@@ -1,13 +1,13 @@
 {
   "name": "mo-it161-cellstock",
-  "version": "2.0.0",
+  "version": "2.1.5",
   "private": true,
   "description": "CellStock cellphone inventory management system with an Express backend.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "test": "node --test",
-    "check": "node --check app.js && node --check js/api.js && node --check js/app.js && node --test"
+    "check": "node --check app.js && node --check js/api.js && node --check js/app.js && node --check js/ui-polish.js && node --test"
   },
   "engines": {
     "node": ">=18"
