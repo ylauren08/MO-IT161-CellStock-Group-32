@@ -12,6 +12,8 @@ The automated tests use a temporary product file, so the demonstration records i
 
 Latest quality check: October 23, 2026 - 8 tests passed, 0 failed.
 
+Tested build: Version 2.1.6.
+
 Covered scenarios:
 
 - frontend files are served through Express;
@@ -31,6 +33,11 @@ Covered scenarios:
 - Stop the server and confirm that CellStock explains that it is using browser storage.
 - Restart the server and confirm that the product API reconnects after reloading the page.
 - Check the inventory workflow in both light and dark modes and at desktop and mobile widths.
+- Confirm that the navigation stays visible and does not create horizontal page scrolling.
+- Confirm that dashboard cards, toast messages, loading feedback, and the back-to-top button respond correctly.
+- Press `/` outside a form field and confirm that focus moves to the inventory search box.
+- Confirm that the displayed version matches the value returned by `GET /api/version`.
+- Check that buttons, links, form fields, and table rows have visible hover or keyboard-focus feedback.
 
 ## Scope
 

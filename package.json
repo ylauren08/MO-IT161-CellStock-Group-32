@@ -1,6 +1,6 @@
 {
   "name": "mo-it161-cellstock",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "private": true,
   "description": "CellStock cellphone inventory management system with an Express backend.",
   "main": "app.js",
