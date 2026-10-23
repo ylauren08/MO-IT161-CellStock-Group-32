@@ -8,6 +8,7 @@ const packageDetails = require("./package.json");
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 const productsFile = process.env.CELLSTOCK_DATA_FILE || path.join(__dirname, "data", "products.json");
+const transactionsFile = process.env.CELLSTOCK_TRANSACTIONS_FILE || path.join(__dirname, "data", "transactions.json");
 const maximumProductRecords = 1000;
 
 app.use(express.json({ limit: "1mb" }));
@@ -119,6 +120,18 @@ function getProductCollectionError(products) {
   return "";
 }
 
+function readTransactions() {
+  const storedTransactions = JSON.parse(fs.readFileSync(transactionsFile, "utf8"));
+  if (!Array.isArray(storedTransactions)) {
+    throw new Error("Transaction records must be stored as an array.");
+  }
+  return storedTransactions;
+}
+
+function normalizeTransactionType(value) {
+  return String(value).trim().toLowerCase().replace(/[\s_-]+/g, "-");
+}
+
 app.get("/api/products", (request, response) => {
   try {
     response.json({ products: readProducts() });
@@ -145,6 +158,30 @@ app.post("/api/products", (request, response) => {
   } catch (error) {
     response.status(500).json({ message: "Product records could not be saved." });
   }
+});
+
+app.get("/api/transactions", (request, response) => {
+  const requestedType = request.query.type;
+  if (requestedType !== undefined && typeof requestedType !== "string") {
+    response.status(400).json({ message: "The type filter must be a single value." });
+    return;
+  }
+
+  let transactions;
+  try {
+    transactions = readTransactions();
+  } catch (error) {
+    response.status(500).json({ message: "Transaction records could not be loaded." });
+    return;
+  }
+
+  if (requestedType && requestedType.trim()) {
+    const wantedType = normalizeTransactionType(requestedType);
+    transactions = transactions.filter((transaction) => {
+      return normalizeTransactionType(transaction.type) === wantedType;
+    });
+  }
+  response.json({ transactions });
 });
 
 app.get("/api/version", (request, response) => {
