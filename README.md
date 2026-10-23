@@ -7,7 +7,10 @@ CellStock is a browser-based cellphone inventory management system developed for
 - HTML
 - CSS
 - JavaScript
-- LocalStorage
+- Node.js
+- Express.js
+- JSON file storage
+- LocalStorage fallback
 
 ## Current Features
 
@@ -22,8 +25,20 @@ CellStock is a browser-based cellphone inventory management system developed for
 ## Running the Project
 
 1. Download or clone the repository.
-2. Open `index.html` in a web browser.
-3. Use **Reset Demo Data** when you need to restore the original records.
+2. Install the current Node.js LTS release.
+3. Open a terminal in the project folder.
+4. Run `npm install`.
+5. Run `npm start`.
+6. Open `http://localhost:3000` in a browser.
+7. Use **Reset Demo Data** when you need to restore the original records.
+
+The Express backend serves the existing frontend and stores product records in `data/products.json`.
+Product data is available through `GET /api/products` and saved through `POST /api/products`.
+Suppliers and transactions still use browser storage during this stage.
+
+## Testing
+
+Run `npm test` for the backend integration tests or `npm run check` for JavaScript syntax checks and the complete automated test suite. The tested scenarios and manual verification checklist are recorded in `TESTING.md`.
 
 ## Team Collaboration
 
@@ -38,4 +53,4 @@ To keep project changes organized, group members should coordinate their work th
 
 ## Project Status
 
-The interactive frontend is currently being refined. Database persistence, secure authentication, and server-side validation are planned for a later milestone.
+The application now includes an introductory Express backend with server-side product validation and JSON file persistence. Database persistence and secure authentication remain planned improvements.

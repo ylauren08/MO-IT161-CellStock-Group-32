@@ -8,6 +8,7 @@ const productService = window.CellStockProducts;
 const supplierService = window.CellStockSuppliers;
 const transactionService = window.CellStockTransactions;
 const dashboardService = window.CellStockDashboard;
+const apiService = window.CellStockApi;
 
 const themeToggle = document.getElementById("theme-toggle");
 const searchForm = document.getElementById("inventory-search-form");
@@ -97,6 +98,8 @@ let pendingDeleteType = null;
 let deletedProduct = null;
 let undoTimer = null;
 let adjustmentProductId = null;
+let backendConnected = false;
+let productSaveQueue = Promise.resolve();
 
 function normalizeProduct(product, fallbackId) {
   return productService.normalize(product, fallbackId, getDefaultSupplierId);
@@ -153,6 +156,38 @@ function saveState() {
   } catch (error) {
     showFeedback(feedbackMessage, "Your changes work for this session, but browser storage is unavailable.", "error");
   }
+
+  if (backendConnected && apiService) {
+    productSaveQueue = productSaveQueue.then(function () {
+      return apiService.saveProducts(products);
+    }).catch(function () {
+      backendConnected = false;
+      showFeedback(feedbackMessage,
+        "The backend connection was lost. Product changes remain available in this browser.", "error");
+    });
+  }
+}
+
+function loadBackendProducts() {
+  if (!apiService) {
+    return Promise.reject(new Error("The backend API module is unavailable."));
+  }
+  return apiService.getProducts().then(function (payload) {
+    if (!payload || !Array.isArray(payload.products) || !payload.products.every(isValidProduct)) {
+      throw new Error("The backend returned invalid product records.");
+    }
+    products = payload.products.map(function (product, index) {
+      return normalizeProduct(product, "PRD-" + String(index + 1).padStart(3, "0"));
+    });
+    backendConnected = true;
+    try {
+      localStorage.setItem(PRODUCT_STORAGE_KEY, JSON.stringify(products));
+    } catch (error) {
+      // Backend records remain usable when browser storage is unavailable.
+    }
+    renderApplication(true);
+    showFeedback(feedbackMessage, "Product records loaded from the Express backend.", "success");
+  });
 }
 
 function showFeedback(element, message, type) {
@@ -1460,10 +1495,20 @@ try {
   applyTheme(false);
 }
 
-document.getElementById("transaction-date").value = getLocalDateValue();
-enableValidationRecovery(addPhoneForm);
-enableValidationRecovery(transactionForm);
-enableValidationRecovery(accessForm);
-enableValidationRecovery(supplierForm);
-enableValidationRecovery(adjustStockForm);
-renderApplication(true);
+function initializeApplication() {
+  document.getElementById("transaction-date").value = getLocalDateValue();
+  enableValidationRecovery(addPhoneForm);
+  enableValidationRecovery(transactionForm);
+  enableValidationRecovery(accessForm);
+  enableValidationRecovery(supplierForm);
+  enableValidationRecovery(adjustStockForm);
+  renderApplication(true);
+
+  loadBackendProducts().catch(function () {
+    showFeedback(feedbackMessage,
+      "CellStock is using browser storage. Start the Express server to enable backend product persistence.",
+      "error");
+  });
+}
+
+initializeApplication();
