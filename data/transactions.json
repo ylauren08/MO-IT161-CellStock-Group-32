@@ -1,0 +1,35 @@
+[
+  {
+    "id": "TXN-000003",
+    "type": "stock-in",
+    "productName": "OPPO Find N6",
+    "quantity": 3,
+    "date": "2026-09-22",
+    "timestamp": "2026-09-22T14:20:00+08:00",
+    "reason": "Supplier Delivery",
+    "notes": "Delivery from Prime Gadget Supply",
+    "staff": "Inventory Manager"
+  },
+  {
+    "id": "TXN-000002",
+    "type": "stock-out",
+    "productName": "Samsung Galaxy S26 Ultra",
+    "quantity": 2,
+    "date": "2026-09-21",
+    "timestamp": "2026-09-21T11:15:00+08:00",
+    "reason": "Sale",
+    "notes": "Released to the sales floor",
+    "staff": "Store Staff"
+  },
+  {
+    "id": "TXN-000001",
+    "type": "stock-in",
+    "productName": "Apple iPhone 18 Pro",
+    "quantity": 4,
+    "date": "2026-09-20",
+    "timestamp": "2026-09-20T09:30:00+08:00",
+    "reason": "Supplier Delivery",
+    "notes": "Opening inventory record",
+    "staff": "Inventory Manager"
+  }
+]
