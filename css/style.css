@@ -12,6 +12,11 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 20px;
+    }
+
     body {
       margin: 0;
       background-color: #f4f7fb;
@@ -19,6 +24,25 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: var(--font-size-base);
       line-height: 1.5;
+    }
+
+    body.motion-ready,
+    body.motion-ready header,
+    body.motion-ready footer,
+    body.motion-ready .panel,
+    body.motion-ready .form-panel,
+    body.motion-ready .kpi-card,
+    body.motion-ready .alert-panel,
+    body.motion-ready .form-note,
+    body.motion-ready .feedback-message,
+    body.motion-ready input,
+    body.motion-ready select,
+    body.motion-ready textarea,
+    body.motion-ready th,
+    body.motion-ready td,
+    body.motion-ready dialog {
+      transition: background-color 240ms ease, border-color 240ms ease,
+        box-shadow 240ms ease, color 240ms ease;
     }
 
     body > a {
@@ -100,6 +124,7 @@
       line-height: 1;
       position: absolute;
       top: 2px;
+      transition: opacity 180ms ease, transform 180ms ease;
       width: 28px;
       z-index: 1;
     }
@@ -126,10 +151,12 @@
 
     .theme-toggle[aria-checked="true"] .theme-toggle-moon {
       opacity: 1;
+      transform: rotate(0deg) scale(1);
     }
 
     .theme-toggle[aria-checked="true"] .theme-toggle-sun {
       opacity: 0;
+      transform: rotate(45deg) scale(0.75);
     }
 
     header h1,
@@ -163,16 +190,23 @@
     }
 
     header nav a {
+      border-bottom: 2px solid transparent;
       color: #d9f8fb;
       font-size: var(--font-size-control);
       font-weight: bold;
       text-decoration: none;
+      transition: border-color 160ms ease, color 160ms ease;
     }
 
     header nav a:hover,
     header nav a:focus {
       color: #ffffff;
       text-decoration: underline;
+    }
+
+    header nav a.is-current {
+      border-bottom-color: #21c7d9;
+      color: #ffffff;
     }
 
     main {
@@ -187,6 +221,17 @@
       max-width: 100%;
       min-width: 0;
       padding: 32px 0 40px;
+    }
+
+    section.reveal-section {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 420ms ease, transform 420ms ease;
+    }
+
+    section.reveal-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     #overview {
@@ -562,6 +607,23 @@
       padding: 10px 12px;
     }
 
+    .feedback-message:not([hidden]) {
+      animation: feedback-in 220ms ease-out;
+    }
+
+    .feedback-loading::before {
+      animation: loading-spin 700ms linear infinite;
+      border: 2px solid #9ccbd2;
+      border-radius: 50%;
+      border-top-color: #0b7285;
+      content: "";
+      display: inline-block;
+      height: 14px;
+      margin-right: 8px;
+      vertical-align: -2px;
+      width: 14px;
+    }
+
     .feedback-success {
       background-color: #e5f7ec;
       border-left-color: #238455;
@@ -900,6 +962,10 @@
       width: calc(100% - 40px);
     }
 
+    dialog[open] {
+      animation: dialog-in 200ms ease-out;
+    }
+
     #supplier-view-dialog,
     #product-view-dialog,
     #adjust-stock-dialog {
@@ -908,6 +974,41 @@
 
     dialog::backdrop {
       background-color: rgba(8, 20, 34, 0.7);
+    }
+
+    dialog[open]::backdrop {
+      animation: backdrop-in 180ms ease-out;
+    }
+
+    @keyframes feedback-in {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes dialog-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes backdrop-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes loading-spin {
+      to { transform: rotate(360deg); }
     }
 
     dialog h2 {
@@ -943,6 +1044,44 @@
       color: #8ee8f0;
       font-weight: bold;
       text-decoration: underline;
+    }
+
+    .back-to-top {
+      align-items: center;
+      background-color: #0b7285;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      bottom: 24px;
+      box-shadow: 0 6px 18px rgba(16, 42, 67, 0.28);
+      color: #ffffff;
+      display: flex;
+      font-size: 1.5rem;
+      font-weight: bold;
+      height: 46px;
+      justify-content: center;
+      line-height: 1;
+      opacity: 0;
+      pointer-events: none;
+      position: fixed;
+      right: 24px;
+      transform: translateY(10px) scale(0.94);
+      transition: background-color 180ms ease, box-shadow 180ms ease,
+        opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+      visibility: hidden;
+      width: 46px;
+      z-index: 9;
+    }
+
+    .back-to-top:hover {
+      background-color: #075d6c;
+      box-shadow: 0 8px 22px rgba(16, 42, 67, 0.36);
+    }
+
+    .back-to-top.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      visibility: visible;
     }
 
     .history-toolbar {
@@ -1468,6 +1607,11 @@
         align-self: flex-start;
       }
 
+      .back-to-top {
+        bottom: 16px;
+        right: 16px;
+      }
+
       .workspace-hero {
         min-height: 520px;
       }
@@ -1557,6 +1701,18 @@
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
       }
+
+      section.reveal-section {
+        opacity: 1;
+        transform: none;
+      }
+
+      .feedback-message:not([hidden]),
+      .feedback-loading::before,
+      dialog[open],
+      dialog[open]::backdrop {
+        animation: none !important;
+      }
     }
 
     @media print {
@@ -1572,6 +1728,7 @@
       footer,
       dialog,
       .undo-notice,
+      .back-to-top,
       #reports > h2,
       #reports > .section-intro,
       .report-panel > .panel-heading-row .button-row,

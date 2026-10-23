@@ -9,8 +9,10 @@ const supplierService = window.CellStockSuppliers;
 const transactionService = window.CellStockTransactions;
 const dashboardService = window.CellStockDashboard;
 const apiService = window.CellStockApi;
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const themeToggle = document.getElementById("theme-toggle");
+const backToTopButton = document.getElementById("back-to-top");
 const searchForm = document.getElementById("inventory-search-form");
 const resetButton = document.getElementById("reset-inventory");
 const searchInput = document.getElementById("search-model");
@@ -194,6 +196,78 @@ function showFeedback(element, message, type) {
   element.textContent = message;
   element.className = "feedback-message" + (type ? " feedback-" + type : "");
   element.hidden = false;
+}
+
+function scrollToElement(element, block) {
+  element.scrollIntoView({
+    behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    block: block || "start"
+  });
+}
+
+function initializePageMotion() {
+  window.requestAnimationFrame(function () {
+    document.body.classList.add("motion-ready");
+  });
+
+  const sections = Array.from(document.querySelectorAll("main > section"));
+  const navigationLinks = Array.from(document.querySelectorAll("header nav a[href^='#']"));
+
+  function updateBackToTopButton() {
+    backToTopButton.classList.toggle("is-visible", window.scrollY > 500);
+  }
+
+  backToTopButton.onclick = function () {
+    window.scrollTo({
+      top: 0,
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth"
+    });
+    document.querySelector("header h1").focus({ preventScroll: true });
+  };
+  window.addEventListener("scroll", updateBackToTopButton, { passive: true });
+  updateBackToTopButton();
+
+  function setCurrentSection(sectionId) {
+    navigationLinks.forEach(function (link) {
+      const isCurrent = link.getAttribute("href") === "#" + sectionId;
+      link.classList.toggle("is-current", isCurrent);
+      if (isCurrent) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    sections.forEach(function (section) { section.classList.add("is-visible"); });
+    return;
+  }
+
+  if (!reducedMotionQuery.matches) {
+    const revealObserver = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+
+    sections.forEach(function (section) {
+      section.classList.add("reveal-section");
+      revealObserver.observe(section);
+    });
+  }
+
+  const navigationObserver = new IntersectionObserver(function (entries) {
+    const visibleEntry = entries.find(function (entry) { return entry.isIntersecting; });
+    if (visibleEntry) {
+      setCurrentSection(visibleEntry.target.id);
+    }
+  }, { rootMargin: "-18% 0px -68% 0px", threshold: 0 });
+
+  sections.forEach(function (section) { navigationObserver.observe(section); });
 }
 
 function validateRequiredFields(form, feedbackElement) {
@@ -803,7 +877,7 @@ function setProductEditor(open, product) {
     stockInput.disabled = false;
     stockHint.textContent = "Use a whole number of zero or more units.";
   }
-  productEditor.scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToElement(productEditor);
   document.getElementById("phone-brand").focus({ preventScroll: true });
 }
 
@@ -835,7 +909,7 @@ function setSupplierEditor(open, supplier) {
   } else {
     supplierForm.reset();
   }
-  supplierEditor.scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToElement(supplierEditor);
   document.getElementById("supplier-name").focus({ preventScroll: true });
 }
 
@@ -1071,7 +1145,7 @@ viewLowStockButton.onclick = function () {
   clearFilters();
   stockFilter.value = "attention";
   renderInventory(true);
-  document.getElementById("inventory-list").scrollIntoView({ behavior: "smooth" });
+  scrollToElement(document.getElementById("inventory-list"));
 };
 
 document.querySelectorAll(".sort-button").forEach(function (button) {
@@ -1148,7 +1222,7 @@ addPhoneForm.onsubmit = function (event) {
   setProductEditor(false);
   renderApplication(true);
   showFeedback(feedbackMessage, successMessage, "success");
-  document.getElementById("inventory-list").scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToElement(document.getElementById("inventory-list"));
 };
 
 inventoryBody.onclick = function (event) {
@@ -1222,7 +1296,7 @@ supplierForm.onsubmit = function (event) {
   setSupplierEditor(false);
   renderApplication(false);
   showFeedback(supplierFeedback, successMessage, "success");
-  document.getElementById("supplier-list-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToElement(document.getElementById("supplier-list-panel"));
 };
 
 supplierBody.onclick = function (event) {
@@ -1247,7 +1321,7 @@ supplierBody.onclick = function (event) {
     if (assignedCount > 0) {
       showFeedback(supplierFeedback, "Cannot delete " + supplier.name + " because it is assigned to " +
         assignedCount + " products. Reassign those products first.", "error");
-      supplierFeedback.scrollIntoView({ behavior: "smooth", block: "center" });
+      scrollToElement(supplierFeedback, "center");
       return;
     }
     requestDelete(supplier.id, "supplier");
@@ -1465,7 +1539,7 @@ accessForm.onsubmit = function (event) {
   };
   document.getElementById("password").value = "";
   showFeedback(accessFeedback, roleNames[role] +
-    " demo access is ready. Secure account verification will be connected during backend development.", "success");
+    " demo access is ready. Secure sign-in is not included in the current milestone scope.", "success");
 };
 
 function applyTheme(useDarkTheme) {
@@ -1496,6 +1570,7 @@ try {
 }
 
 function initializeApplication() {
+  initializePageMotion();
   document.getElementById("transaction-date").value = getLocalDateValue();
   enableValidationRecovery(addPhoneForm);
   enableValidationRecovery(transactionForm);
@@ -1504,10 +1579,15 @@ function initializeApplication() {
   enableValidationRecovery(adjustStockForm);
   renderApplication(true);
 
+  feedbackMessage.setAttribute("aria-busy", "true");
+  showFeedback(feedbackMessage, "Loading product records from the Express backend...", "loading");
+
   loadBackendProducts().catch(function () {
     showFeedback(feedbackMessage,
       "CellStock is using browser storage. Start the Express server to enable backend product persistence.",
       "error");
+  }).finally(function () {
+    feedbackMessage.removeAttribute("aria-busy");
   });
 }
 
