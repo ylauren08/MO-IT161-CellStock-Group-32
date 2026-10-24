@@ -10,14 +10,14 @@ const vm = require("node:vm");
 const dataFile = path.join(__dirname, "..", "data", "transactions.json");
 
 function readFrontendTransactions() {
-  const source = fs.readFileSync(path.join(__dirname, "..", "js", "inventory-data.js"), "utf8");
+  const source = fs.readFileSync(path.join(__dirname, "..", "..", "frontend", "js", "inventory-data.js"), "utf8");
   const sandbox = { window: {} };
   vm.createContext(sandbox);
   vm.runInContext(source, sandbox);
   return sandbox.window.cellstockTransactions;
 }
 
-test("data/transactions.json matches the transaction records in js/inventory-data.js", () => {
+test("backend transaction data matches the frontend demonstration records", () => {
   const stored = JSON.parse(fs.readFileSync(dataFile, "utf8"));
   assert.deepEqual(stored, JSON.parse(JSON.stringify(readFrontendTransactions())));
 });

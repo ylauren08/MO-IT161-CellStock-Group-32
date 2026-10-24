@@ -7,6 +7,7 @@ const packageDetails = require("./package.json");
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
+const frontendFolder = path.join(__dirname, "..", "frontend");
 const productsFile = process.env.CELLSTOCK_DATA_FILE || path.join(__dirname, "data", "products.json");
 const transactionsFile = process.env.CELLSTOCK_TRANSACTIONS_FILE || path.join(__dirname, "data", "transactions.json");
 const maximumProductRecords = 1000;
@@ -23,9 +24,9 @@ const staticOptions = {
     response.set("Cache-Control", "no-store");
   }
 };
-app.use("/assets", express.static(path.join(__dirname, "assets"), staticOptions));
-app.use("/css", express.static(path.join(__dirname, "css"), staticOptions));
-app.use("/js", express.static(path.join(__dirname, "js"), staticOptions));
+app.use("/assets", express.static(path.join(frontendFolder, "assets"), staticOptions));
+app.use("/css", express.static(path.join(frontendFolder, "css"), staticOptions));
+app.use("/js", express.static(path.join(frontendFolder, "js"), staticOptions));
 
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
@@ -190,7 +191,7 @@ app.get("/api/version", (request, response) => {
 
 app.get("/", (request, response) => {
   response.set("Cache-Control", "no-store");
-  response.sendFile(path.join(__dirname, "index.html"));
+  response.sendFile(path.join(frontendFolder, "index.html"));
 });
 
 app.use("/api", (request, response) => {
