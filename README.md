@@ -22,23 +22,45 @@ CellStock is a browser-based cellphone inventory management system developed for
 - Inventory reports and CSV export
 - Responsive light and dark modes
 
+## Project Structure
+
+```text
+CellStock/
+|-- backend/
+|   |-- app.js
+|   |-- data/
+|   |-- tests/
+|   |-- package.json
+|   `-- package-lock.json
+|-- frontend/
+|   |-- index.html
+|   |-- assets/
+|   |-- css/
+|   `-- js/
+|-- README.md
+|-- TESTING.md
+`-- .gitignore
+```
+
 ## Running the Project
 
 1. Download or clone the repository.
 2. Install the current Node.js LTS release.
-3. Open a terminal in the project folder.
+3. Open a terminal in the `backend` folder.
 4. Run `npm install`.
 5. Run `npm start`.
 6. Open `http://localhost:3000` in a browser.
 7. Use **Reset Demo Data** when you need to restore the original records.
 
-The Express backend serves the existing frontend and stores product records in `data/products.json`.
+The `frontend` folder contains the HTML, CSS, JavaScript, and image files. The `backend` folder contains the Express server, JSON data, automated tests, and Node.js package files.
+
+The Express backend serves the frontend and stores product records in `backend/data/products.json`.
 Product data is available through `GET /api/products` and saved through `POST /api/products`.
-Suppliers and transactions still use browser storage during this stage.
+Transaction history is available through `GET /api/transactions`, including its optional `type` filter. The current transaction interface and supplier records still use browser storage during this stage.
 
 ## Testing
 
-Run `npm test` for the backend integration tests or `npm run check` for JavaScript syntax checks and the complete automated test suite. The tested scenarios and manual verification checklist are recorded in `TESTING.md`.
+From the `backend` folder, run `npm test` for the backend integration tests or `npm run check` for JavaScript syntax checks and the complete automated test suite. The tested scenarios and manual verification checklist are recorded in `TESTING.md`.
 
 ## Team Collaboration
 
@@ -53,4 +75,4 @@ To keep project changes organized, group members should coordinate their work th
 
 ## Project Status
 
-The application now includes an introductory Express backend with server-side product validation and JSON file persistence. Database persistence and secure authentication remain planned improvements.
+The application uses separate frontend and backend folders. Its Express backend provides product persistence and transaction retrieval, while database persistence and secure authentication remain planned improvements.

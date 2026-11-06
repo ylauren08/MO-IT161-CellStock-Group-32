@@ -2,17 +2,17 @@
 
 ## Automated Checks
 
-Run the complete quality check from the project folder:
+Run the complete quality check from the `backend` folder:
 
 ```text
 npm run check
 ```
 
-The automated tests use a temporary product file, so the demonstration records in `data/products.json` are not changed.
+The automated tests use temporary data files, so the demonstration records in `backend/data` are not changed.
 
-Latest quality check: October 23, 2026 - 8 tests passed, 0 failed.
+Latest quality check: October 24, 2026 - 16 tests passed, 0 failed.
 
-Tested build: Version 2.1.6.
+Tested build: Version 2.1.7.
 
 Covered scenarios:
 
@@ -23,10 +23,13 @@ Covered scenarios:
 - invalid records, malformed JSON, duplicate IDs, and duplicate SKUs are rejected;
 - records remain available after the server is restarted;
 - damaged stored data and unknown API routes return clear JSON errors.
+- transaction records are returned through `GET /api/transactions`;
+- transaction types are filtered without case sensitivity;
+- missing or damaged transaction data returns a clear JSON error.
 
 ## Browser Verification
 
-- Start the server with `npm start` and open `http://localhost:3000`.
+- Open a terminal in the `backend` folder, start the server with `npm start`, and open `http://localhost:3000`.
 - Confirm that the inventory reports that product records were loaded from Express.
 - Add or edit a product, reload the page, and confirm that the change remains.
 - Try invalid form values and confirm that the form explains what must be corrected.
@@ -41,4 +44,4 @@ Covered scenarios:
 
 ## Scope
 
-Product records are the completed backend-supported feature for this milestone. Supplier and transaction records remain in browser storage until their separate backend issues are implemented and tested.
+Product persistence is the completed frontend-connected backend feature. Transaction history also has a tested read-only backend endpoint, while the current transaction interface and supplier records continue to use browser storage.
