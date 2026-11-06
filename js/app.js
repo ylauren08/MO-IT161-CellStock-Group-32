@@ -67,6 +67,8 @@ const adjustStockDialog = document.getElementById("adjust-stock-dialog");
 const adjustStockForm = document.getElementById("adjust-stock-form");
 const adjustStockFeedback = document.getElementById("adjust-stock-feedback");
 const reportFilterForm = document.getElementById("report-filter-form");
+// Report filters as last applied. null means no filter has been applied yet (everything is shown).
+let appliedReportFilters = null;
 const reportInventoryList = document.getElementById("report-inventory-list");
 const reportTransactionList = document.getElementById("report-transaction-list");
 
@@ -718,8 +720,8 @@ function getTransactionProduct(transaction) {
   });
 }
 
-function getReportData() {
-  const filters = {
+function readReportFilters() {
+  return {
     dateFrom: document.getElementById("report-date-from").value,
     dateTo: document.getElementById("report-date-to").value,
     brand: document.getElementById("report-brand").value,
@@ -728,6 +730,10 @@ function getReportData() {
     type: document.getElementById("report-type").value,
     staff: document.getElementById("report-staff").value
   };
+}
+
+function getReportData() {
+  const filters = appliedReportFilters || readReportFilters();
   const filteredProducts = products.filter(function (product) {
     return (filters.brand === "all" || product.brand === filters.brand) &&
       (filters.supplier === "all" || product.supplierId === filters.supplier) &&
@@ -743,7 +749,47 @@ function getReportData() {
       (filters.supplier === "all" || (product && product.supplierId === filters.supplier)) &&
       (filters.stockStatus === "all" || (product && getStockStatus(product).key === filters.stockStatus));
   });
-  return { products: filteredProducts, transactions: filteredTransactions };
+  
+  const filteredSuppliers = suppliers.filter(function (supplier) {
+    const carriesBrand = filters.brand === "all" || supplier.brands.includes(filters.brand) ||
+      products.some(function (product) {
+        return product.supplierId === supplier.id && product.brand === filters.brand;
+      });
+    return (filters.supplier === "all" || supplier.id === filters.supplier) && carriesBrand;
+  });
+  return {
+    products: filteredProducts,
+    transactions: filteredTransactions,
+    suppliers: filteredSuppliers,
+    filters: filters
+  };
+}
+
+function slugifyFilePart(text) {
+  return String(text).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+function getExportFileName(name, filters, relevantKeys) {
+  const stockStatusNames = { available: "in-stock", low: "low-stock", out: "out-of-stock" };
+  const parts = [];
+  relevantKeys.forEach(function (key) {
+    const value = filters[key];
+    if (!value || value === "all") {
+      return;
+    }
+    if (key === "supplier") {
+      parts.push(slugifyFilePart(getSupplierName(value)));
+    } else if (key === "stockStatus") {
+      parts.push(stockStatusNames[value] || slugifyFilePart(value));
+    } else if (key === "dateFrom") {
+      parts.push("from-" + value);
+    } else if (key === "dateTo") {
+      parts.push("to-" + value);
+    } else {
+      parts.push(slugifyFilePart(value));
+    }
+  });
+  return ["cellstock", name].concat(parts, [getLocalDateValue()]).join("-") + ".csv";
 }
 
 function renderReports() {
@@ -1484,36 +1530,42 @@ transactionForm.onsubmit = function (event) {
 
 reportFilterForm.onsubmit = function (event) {
   event.preventDefault();
+  appliedReportFilters = readReportFilters();
   renderReports();
 };
 
 reportFilterForm.onreset = function () {
-  window.setTimeout(renderReports, 0);
+  window.setTimeout(function () {
+    appliedReportFilters = readReportFilters();
+    renderReports();
+  }, 0);
 };
 
 document.querySelectorAll("[data-export]").forEach(function (button) {
   button.onclick = function () {
     const exportType = button.dataset.export;
+    const reportData = getReportData();
     if (exportType === "inventory") {
-      reportService.downloadCsv("cellstock-inventory-" + getLocalDateValue() + ".csv",
+      reportService.downloadCsv(getExportFileName("inventory", reportData.filters, ["brand", "supplier", "stockStatus"]),
         ["SKU", "Brand", "Model", "Storage GB", "Color", "Supplier", "Cost Price", "Selling Price", "Quantity", "Reorder Level", "Status", "Last Updated"],
-        products.map(function (product) {
+        reportData.products.map(function (product) {
           return [product.sku, product.brand, product.model, product.storage, product.color,
             getSupplierName(product.supplierId), product.costPrice, product.price, product.quantity,
             product.reorderLevel, getStockStatus(product).label, product.lastUpdated];
         }));
     } else if (exportType === "suppliers") {
-      reportService.downloadCsv("cellstock-suppliers-" + getLocalDateValue() + ".csv",
+      reportService.downloadCsv(getExportFileName("suppliers", reportData.filters, ["brand", "supplier"]),
         ["Supplier ID", "Supplier", "Contact", "Email", "Phone", "Address", "Brands", "Status", "Assigned Products"],
-        suppliers.map(function (supplier) {
+        reportData.suppliers.map(function (supplier) {
           return [supplier.id, supplier.name, supplier.contact, supplier.email, supplier.phone, supplier.address,
             supplier.brands.join("; "), supplier.status,
             products.filter(function (product) { return product.supplierId === supplier.id; }).length];
         }));
     } else {
-      reportService.downloadCsv("cellstock-transactions-" + getLocalDateValue() + ".csv",
+      reportService.downloadCsv(getExportFileName("transactions", reportData.filters,
+        ["dateFrom", "dateTo", "brand", "supplier", "stockStatus", "type", "staff"]),
         ["Transaction ID", "Date", "Recorded At", "Product", "Type", "Reason", "Quantity Change", "Staff", "Notes"],
-        transactions.map(function (transaction) {
+        reportData.transactions.map(function (transaction) {
           return [transaction.id, transaction.date, transaction.timestamp, transaction.productName,
             transactionService.typeLabel(transaction.type), transaction.reason,
             transactionService.signedQuantity(transaction), transaction.staff, transaction.notes];
